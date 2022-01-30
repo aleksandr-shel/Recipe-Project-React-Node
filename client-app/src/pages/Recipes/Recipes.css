@@ -1,0 +1,29 @@
+.recipe-list{
+    list-style-type: none;
+    margin:0;
+    padding:0;
+}
+
+.recipe-item{
+
+}
+
+.recipe-item:hover{
+    background-color: darkgray;
+}
+
+.recipe-item > img{
+    width: auto;
+    height: 200px;
+}
+
+
+@keyframes appearsFromLeft {
+    from{transform: translate(-50vw,0);}
+    to{transform: translate(0);}
+}
+
+@keyframes appearsFromRight {
+    from {transform: translate(50vw,0);}
+    to {transform: translate(0);}
+}

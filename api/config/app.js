@@ -3,6 +3,8 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
 let mongoose = require('mongoose');
 let DB = require('./db');
 
@@ -17,8 +19,16 @@ mongoDB.once('open',()=>{
 });
 
 let users = require('../routes/userRouting');
+let recipeRouting = require('../routes/recipeRouting');
 
 let app = express();
+
+app.use(fileUpload({
+    createParentPath: true
+}));
+
+
+app.use(cors())
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +38,7 @@ app.use(cookieParser());
 
 //routing
 app.use('/api/users', users);
+app.use('/api/recipes', recipeRouting);
 
 
 // catch 404 and forward to error handler

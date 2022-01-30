@@ -1,0 +1,23 @@
+.form-container{
+    padding: 10vh;
+    
+}
+
+.form-container > table{
+    margin: 0px auto;
+}
+
+.form-container input {
+    margin: 5px;
+}
+
+.form-btns td{
+    text-align: center;
+}
+
+.form-container input[type="submit"]{
+    padding: 5px 15px;
+}
+.form-container input[type="reset"]{
+    padding: 5px 15px;
+}

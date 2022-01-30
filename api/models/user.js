@@ -11,7 +11,9 @@ let User = mongoose.Schema(
             type: String,
             default: '',
             trim: true,
-            required: 'username is required'
+            required: 'username is required',
+            unique: true,
+            dropDups: true
         },
         password:{
             type:String,
@@ -38,7 +40,7 @@ let User = mongoose.Schema(
             required: 'lastname is required'
         },
         recipes:{
-            type: [Schema.Types.Mixed],
+            type: [String],
             default: []
         }
     }, {

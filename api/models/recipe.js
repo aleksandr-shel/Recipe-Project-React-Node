@@ -1,9 +1,12 @@
 
 let mongoose = require('mongoose');
 
+const {Schema} = mongoose;
+
+
 let recipeModel = mongoose.Schema(
     {
-        name: {
+        recipeName: {
             type: String,
             default: ''
         },
@@ -12,8 +15,8 @@ let recipeModel = mongoose.Schema(
             default:''
         },
         ingredients: {
-            type: [String],
-            default: ['']
+            type: [Schema.Types.Mixed],
+            default: []
         },
         description:{
             type:String,
