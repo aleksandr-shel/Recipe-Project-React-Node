@@ -3,6 +3,9 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+//adding environmental variables from .env
+require('dotenv').config()
+
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 let mongoose = require('mongoose');

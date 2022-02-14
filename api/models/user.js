@@ -7,25 +7,17 @@ const {Schema} = mongoose;
 
 let User = mongoose.Schema(
     {
-        username: {
-            type: String,
-            default: '',
-            trim: true,
-            required: 'username is required',
-            unique: true,
-            dropDups: true
-        },
-        password:{
-            type:String,
-            default: '',
-            trim: true,
-            required: 'password is required'
-        },
         email:{
             type:String,
             default:'',
             trim: true,
-            required: 'email address is required'
+            required: 'email address is required',
+            unique: true,
+            dropDups: true
+        },
+        passwordHash:{
+            type:String,
+            default:''
         },
         firstName:{
             type: String,

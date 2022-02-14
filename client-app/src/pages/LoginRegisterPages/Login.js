@@ -7,6 +7,9 @@ export default function Login(){
     const baseUrl = "https://localhost:5000/";
     const [inputs, setInputs] = useState({})
 
+    const [emailValue, setEmailValue] = useState('');
+    const [passwordValue, setPasswordValue] = useState('');
+
 
     const handleChanges = (e)=>{
         const name = e.target.name;
@@ -41,14 +44,14 @@ export default function Login(){
                 <table>
                     <tr>
                         <td>
-                            <label>Username: </label>
+                            <label>Email: </label>
                         </td>
                         <td>
                             <input
-                            type="text"
-                            name="Username"
-                            value={inputs.username || ""}
-                            onChange={handleChanges}/>
+                                type="text"
+                                name="email"
+                                value={inputs.email || ""}
+                                onChange={handleChanges}/>
                         </td>
                     </tr>
                     <tr>
@@ -58,7 +61,7 @@ export default function Login(){
                         <td>
                             <input
                             type="password"
-                            name="Password"
+                            name="password"
                             value={inputs.password || ""}
                             onChange={handleChanges}/>
                         </td>

@@ -1,20 +1,42 @@
 .recipe-list{
-    list-style-type: none;
-    margin:0;
     padding:0;
+    width: 50%;
+    margin:auto;
 }
 
-.recipe-item{
+@media only screen and (max-width: 1200px){
+    .recipe-list{
+        width:100%;
+        padding:0;
+    }
+}
 
+.recipe-desc{
+    overflow: hidden;
+    height: 200px;
+}
+
+@keyframes hoverItem {
+    from{background-color: white;}
+    to{background-color: darkgrey;}
 }
 
 .recipe-item:hover{
-    background-color: darkgray;
+    animation-name: hoverItem;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
 }
 
-.recipe-item > img{
-    width: auto;
-    height: 200px;
+th,td :hover{
+    /* does not work*/
+    animation: hoverItem 1s ease forwards;
+}
+
+
+.recipe-item img{
+    margin: 5px;
+    width: 300px;
 }
 
 

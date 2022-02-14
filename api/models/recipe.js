@@ -26,6 +26,9 @@ let recipeModel = mongoose.Schema(
             type: String,
             default: ''
         },
+        rating:{
+            type:Number
+        },
         author: {
             type: String,
             default: ''

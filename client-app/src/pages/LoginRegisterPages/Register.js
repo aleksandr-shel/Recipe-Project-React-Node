@@ -37,15 +37,15 @@ export default function Register(){
             <h1 style={{textAlign:'center'}}>Register</h1>
             <form className="form-container" onSubmit={handleRegistration}>
                 <table>
-                    <tr>
+                <tr>
                         <td>
-                            <label>Username: </label>
+                            <label>Email: </label>
                         </td>
                         <td>
                             <input
-                            type="text"
-                            name="Username"
-                            value={inputs.username || ""}
+                            type="email"
+                            name="Email"
+                            value={inputs.email || ""}
                             onChange={handleChanges}/>
                         </td>
                     </tr>
@@ -56,20 +56,8 @@ export default function Register(){
                         <td>
                             <input
                             type="password"
-                            name="Password"
+                            name="password"
                             value={inputs.password || ""}
-                            onChange={handleChanges}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Email: </label>
-                        </td>
-                        <td>
-                            <input
-                            type="email"
-                            name="Email"
-                            value={inputs.email || ""}
                             onChange={handleChanges}/>
                         </td>
                     </tr>

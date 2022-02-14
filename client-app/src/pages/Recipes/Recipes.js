@@ -7,13 +7,20 @@ const baseUrl = 'http://localhost:5000/api/'
 function RecipeItem(recipe, index){
 
     return(
-        <li key={index} className="recipe-item">
-            <div>
-                <div>{recipe.recipeName}</div>
-                <div>{recipe.description}</div>
-            </div>
-            <img alt="recipe img" src={recipe.imageUrl}/>
-        </li>
+        <tr key={index} className="recipe-item">
+            <td>
+                {recipe.recipeName}
+            </td>
+            <td className="recipe-desc">
+                {recipe.description}
+            </td>
+            <td>
+                {recipe.timeToCook}
+            </td>
+            <td>
+                <img alt={recipe.recipeName} src={recipe.imageUrl}/>
+            </td>
+        </tr>
     )
 }
 
@@ -33,10 +40,10 @@ function RecipeList(){
     },[])
 
     return(
-        <div>
-            <ul className="recipe-list">
+        <div className="recipe-list">
+            <table>
                 {recipes.map((recipe, index) => RecipeItem(recipe, index))}
-            </ul>
+            </table>
         </div>
     )
 }
