@@ -132,7 +132,7 @@ function FunctionAppear(props){
   )
 
   return(
-      <div style={{backgroundColor: color, display: isDisplayed ? 'block':'none' , width:100, height:100, zIndex: 1, position:'absolute'}}>
+      <div style={{backgroundColor: color, display: isDisplayed ? 'block':'none' , width:100, height:100, zIndex: 1, position:'absolute', top:'0px'}}>
           <h1>Hello</h1>
       </div>
   )

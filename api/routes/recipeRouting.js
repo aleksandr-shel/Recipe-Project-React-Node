@@ -1,8 +1,12 @@
 const express = require('express');
+const { JsonWebTokenError } = require('jsonwebtoken');
 const router = express.Router();
 
 const Recipe = require('../models/recipe');
 const user = require('../models/user');
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.get('/',(req,res)=>{
 
@@ -17,6 +21,29 @@ router.get('/',(req,res)=>{
 
 
 router.post('/add',(req,res)=>{
+
+    const {authorization} = req.headers;
+
+    const {userId} = req.body;
+
+    if (!authorization){
+        return res.status(401).json({message: 'no authorization header sent'})
+    }
+
+    const token = authorization.split(' ')[1];
+
+    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded)=>{
+        if (err){
+            return res.status(401).json({message:'Unable to verify token'})
+        }
+
+        const {id} = decoded;
+
+        if(id !== userId){
+
+        }
+    })
+
     let newRecipe = new Recipe({
         recipeName: req.body.recipeName,
         imageUrl: req.body.imageUrl,

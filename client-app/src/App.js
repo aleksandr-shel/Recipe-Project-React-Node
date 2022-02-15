@@ -8,6 +8,7 @@ import Register from './pages/LoginRegisterPages/Register';
 import { UserContext } from './Context/UserContext';
 import Test from './pages/TestPage/Test';
 import AddRecipe from './pages/Recipes/AddRecipe';
+import { Todos } from './pages/TestPage/ReducerExample';
 
 export default function App(){
   const [user, setUser] = useState({});
@@ -21,6 +22,7 @@ export default function App(){
             <Route path="login" element={<Login/>}/>
             <Route path='register' element={<Register/>}/>
             <Route path='testpage' element={<Test/>}/>
+            <Route path='test-reducer-example' element={<Todos/>}/>
             <Route path="add-recipe" element={<AddRecipe/>}/>
           </Route>
         </Routes>

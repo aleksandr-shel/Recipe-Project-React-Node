@@ -15,9 +15,16 @@
     text-align: center;
 }
 
-.form-container input[type="submit"]{
-    padding: 5px 15px;
+input, button{
+    border: 1px solid black;
+    border-radius: 8px;
+    display: block;
+    font-size: 16px;
+    margin: 8px 0;
+    padding: 8px;
 }
-.form-container input[type="reset"]{
-    padding: 5px 15px;
+button {
+    cursor: pointer;
+    width: 100%;
+    margin: 8px auto;
 }

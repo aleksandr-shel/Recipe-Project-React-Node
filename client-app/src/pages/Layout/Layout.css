@@ -38,9 +38,9 @@ div.dropbtn {
     padding: 15px;
 }
 
-.dropdown:hover .dropdown-content{
+/* .dropdown:hover .dropdown-content{
     display: block;
-}
+} */
 .dropdown:hover .dropbtn{
     background-color: var(--nav-link-hover);
 }
