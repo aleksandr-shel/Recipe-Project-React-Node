@@ -39,27 +39,37 @@ router.post('/add',(req,res)=>{
 
         const {id} = decoded;
 
-        if(id !== userId){
+        // if(id !== userId){
+        //     return res.status(403).json({message:'Not allowed to add recipe'})
+        // }
+        let newRecipe = new Recipe({
+            recipeName: req.body.recipeName,
+            imageUrl: req.body.imageUrl,
+            ingredients: req.body.ingredients,
+            description: req.body.description,
+            instruction: req.body.instruction,
+            timeToCook: req.body.timeToCook,
+            author: req.body.author
+        })
+    
+        Recipe.create(newRecipe, (err, recipe)=>{
+            if (err){
+                res.send(err);
+            } else {
+                res.status(200).send(recipe);
+                // const {recipeName, imageUrl, ingredients, description, tomeToCook, author} = recipe
 
-        }
+                // jwt.sign({recipeName, imageUrl, ingredients, description, tomeToCook, author}, process.env.JWT_SECRET, {expiresIn:'2d'}, 
+                //     (err, token)=>{
+                //         if (err){
+                //             return res.status(200).json(err);
+                //         }
+                //         res.status(200).json({token})
+                //     })
+            }
+        })
     })
 
-    let newRecipe = new Recipe({
-        recipeName: req.body.recipeName,
-        imageUrl: req.body.imageUrl,
-        ingredients: req.body.ingredients,
-        description: req.body.description,
-        timeToCook: req.body.timeToCook,
-        author: req.body.author
-    })
-
-    Recipe.create(newRecipe, (err, recipe)=>{
-        if (err){
-            res.send(err);
-        } else {
-            res.send(recipe);
-        }
-    })
 });
 
 

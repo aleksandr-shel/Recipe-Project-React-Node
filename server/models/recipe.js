@@ -22,6 +22,10 @@ let recipeModel = mongoose.Schema(
             type:String,
             default: ''
         },
+        instruction:{
+            type:String,
+            default:''
+        },
         timeToCook: {
             type: String,
             default: ''
@@ -30,8 +34,8 @@ let recipeModel = mongoose.Schema(
             type:Number
         },
         author: {
-            type: String,
-            default: ''
+            type: Object,
+            default: {}
         }
     }, 
     {

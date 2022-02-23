@@ -21,7 +21,7 @@ mongoDB.once('open',()=>{
     console.log('Connected to MongoDB...');
 });
 
-let users = require('../routes/userRouting');
+let userRouting = require('../routes/userRouting');
 let recipeRouting = require('../routes/recipeRouting');
 
 let app = express();
@@ -40,7 +40,7 @@ app.use(cookieParser());
 
 
 //routing
-app.use('/api/users', users);
+app.use('/api/users', userRouting);
 app.use('/api/recipes', recipeRouting);
 
 

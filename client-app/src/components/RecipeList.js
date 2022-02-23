@@ -1,46 +1,22 @@
-import React from "react";
+
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
-
-const baseUrl = 'http://localhost:5000/api/'
-
-function RecipeItem(recipe, index){
-
-    return(
-        <tr key={index} className="recipe-item">
-            <td>
-                {recipe.recipeName}
-            </td>
-            <td className="recipe-desc">
-                {recipe.description}
-            </td>
-            <td>
-                {recipe.timeToCook}
-            </td>
-            <td>
-                <img alt={recipe.recipeName} src={recipe.imageUrl}/>
-            </td>
-        </tr>
-    )
-}
+import axios from 'axios';
+import { RecipeItem } from "./RecipeItem";
 
 
-
-function RecipeList(){
+export function RecipeList(){
     const [recipes, setRecipes] = useState([]);
 
     useEffect(()=>{
-        fetch(baseUrl + 'recipes')
-            .then(response =>{
-                return response.json();
-            })
-            .then(data =>{
-                setRecipes(data);
-            })
+        axios.get('/api/recipes').then(response=>{
+            console.log(response);
+        })
     },[])
 
     return(
         <RecipeListDiv>
+            <h1 style={{textAlign:'center'}}>Recipes</h1>
             <table>
                 {recipes.map((recipe, index) => RecipeItem(recipe, index))}
             </table>
@@ -48,16 +24,9 @@ function RecipeList(){
     )
 }
 
-export default function Recipes(){
-
-
-    return (
-        <RecipeList/>
-    )
-}
-
-
 const RecipeListDiv = styled.div`
+    animation: appearsFromLeft 1s ease;
+
     .recipe-list{
         padding:0;
         width: 50%;
@@ -99,14 +68,9 @@ const RecipeListDiv = styled.div`
         width: 300px;
     }
 
-
     @keyframes appearsFromLeft {
         from{transform: translate(-50vw,0);}
         to{transform: translate(0);}
     }
 
-    @keyframes appearsFromRight {
-        from {transform: translate(50vw,0);}
-        to {transform: translate(0);}
-    }
 `;

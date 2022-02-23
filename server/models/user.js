@@ -31,7 +31,11 @@ let User = mongoose.Schema(
             trim: true,
             required: 'lastname is required'
         },
-        recipes:{
+        userRecipes:{
+            type: [String],
+            default: []
+        },
+        favoriteRecipes:{
             type: [String],
             default: []
         }
