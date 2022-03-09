@@ -9,6 +9,8 @@ import Login from './pages/LoginRegisterPages/Login';
 import Register from './pages/LoginRegisterPages/Register';
 import AddRecipePage from "./pages/Recipes/AddRecipePage";
 import { useLoggedInContext } from "./Context/LoggedInContext";
+import AccountInfo from "./pages/AcountInfo";
+import RecipePage from "./pages/Recipes/RecipePage";
 
 export default function Routing(){
 
@@ -18,11 +20,13 @@ export default function Routing(){
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <Route path="add-recipe-page" element={<AddRecipePage/>}/>
+                    <Route path="add-recipe-page" element={loggedInContext.loggedIn ? <AddRecipePage/> : <Login link="/add-recipe-page"/>}/>
                     <Route index element={<Recipes/>}/>
                     <Route path="random-recipe" element={<RandomRecipe/>}/>
                     <Route path="login" element={<Login/>}/>
                     <Route path='register' element={<Register/>}/>
+                    <Route path='account-info' element={<AccountInfo/>}/>
+                    <Route path='recipes/:recipeId' element={<RecipePage/>}/>
                     <Route path='testpage' element={<Test/>}/>
                     <Route path='test-reducer-example' element={<Todos/>}/>
                 </Route>

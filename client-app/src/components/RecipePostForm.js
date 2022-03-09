@@ -107,7 +107,9 @@ export function RecipePostForm(){
                     </li>)
                 })
             }
-            <button style={{color:'white', background:'#3cab54'}} onClick={addIngredientInput}>Add Ingredient</button>
+            <li>
+                <button style={{marginTop:'5px', color:'white', background:'#3cab54'}} onClick={addIngredientInput}>Add Ingredient</button>
+            </li>
         </ul>;
     return(
         <RecipeAddFormContainer>
@@ -130,7 +132,7 @@ export function RecipePostForm(){
                 </li>
                 <li>
                     <label htmlFor="image">Image Url: </label>
-                    <input type="text" id="image" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
+                    <input type="url" id="image" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
                 </li>
                 <li>
                     <label>Ingredients: </label>
@@ -207,8 +209,19 @@ const RecipeAddFormContainer = styled.div`
         border-radius: 2px;
     }
 
+    .flex-inner {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .flex-inner li {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
     .flex-inner li input {
-        padding: 3px;
+        padding: 7px;
         margin: 4px 5px;
     }
 

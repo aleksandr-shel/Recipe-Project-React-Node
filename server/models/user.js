@@ -5,7 +5,7 @@ let Recipe = require('./recipe')
 
 const {Schema} = mongoose;
 
-let User = mongoose.Schema(
+let User = Schema(
     {
         email:{
             type:String,

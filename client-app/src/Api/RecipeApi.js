@@ -1,7 +1,11 @@
+import axios from 'axios';
 
+const api = axios.create({
+    baseURL:""
+})
 
-const recipeApi = {
+const apis = {
 
 }
 
-export default recipeApi;
+export default apis;

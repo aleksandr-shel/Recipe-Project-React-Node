@@ -1,15 +1,13 @@
 
 import React from 'react';
-
 import {Link, Outlet} from 'react-router-dom';
-import styled from 'styled-components';
-
-import { useState } from 'react';
 import {useLoggedInContext } from '../../Context/LoggedInContext';
 import { useUser } from '../../Auth/useUser';
+import {Navbar, Container, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
+import {AiOutlineUser} from 'react-icons/ai';
+import styled from 'styled-components';
 
 export default function Layout(){
-    const [dropdownShow, setDropdownShow] = useState(false)
 
     const user = useUser()
     const loggedInContext = useLoggedInContext()
@@ -20,106 +18,54 @@ export default function Layout(){
     }
 
     return (
-        <LayoutNav>
-            <nav className="navbar">
-                <Link to="/">Recipes</Link>
-                <Link to="/random-recipe">Random Recipe</Link>
-
-                <div className="dropdown" onClick={()=>setDropdownShow(true)} onMouseLeave={()=>setDropdownShow(false)}>
-                    <div className="dropbtn"><i className="fas fa-user-circle"></i></div>
-                    <div style={{display:dropdownShow?'block':'none'}} className="dropdown-content">
-                        {
-                            !loggedInContext.loggedIn ?
-                        <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
-                        </>
-                        :
-                        <div className="logout-btn" onClick={logOut} >Logout</div>
-                        }
-                    </div>
-                </div>
-            </nav>
-           
+        <LayoutDiv>
+            <Navbar bg="light" expand="lg">
+                <Container fluid>
+                    <Navbar.Brand href="/">ALL RECIPES</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="navbarScroll" />
+                    <Navbar.Collapse id="navbarScroll">
+                        <Nav
+                            className="me-auto my-2 my-lg-0"
+                            style={{ maxHeight: '100px' }}
+                            navbarScroll
+                        >
+                            <Nav.Link><Link to="random-recipe">Random Recipe</Link></Nav.Link>
+                            <Form className="d-flex">
+                                <FormControl
+                                type="search"
+                                placeholder="Search for Recipe"
+                                className="me-2"
+                                aria-label="Search"
+                                />
+                                <Button variant="outline-success">Search</Button>
+                            </Form>
+                        </Nav>
+                        <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{loggedInContext.loggedIn ? user?.email : ""}</>} id="navbarScrollingDropdown">
+                                {loggedInContext.loggedIn ? 
+                                    <>
+                                        <NavDropdown.Item><Link to="/account-info">Account Info</Link></NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item onClick={logOut}>Log out</NavDropdown.Item>
+                                    </>
+                                    :
+                                    <>
+                                        <NavDropdown.Item><Link to="login">Login</Link></NavDropdown.Item>
+                                        <NavDropdown.Item><Link to="register">Register</Link></NavDropdown.Item>
+                                    </>
+                                }
+                            </NavDropdown>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
             <Outlet/>
-        </LayoutNav>
+        </LayoutDiv>
     )
 }
 
-const navbgc = '#3cab54',
-    navlinktextcolor = 'black',
-    navlinkhover = 'darkgray',
-    navdropdownhover = 'lightgray'
 
-const LayoutNav = styled.div`
-
-    .navbar{
-        display: flex;
-        justify-content: center;
-        background-color: ${navbgc};
-        margin:0;
-        padding:0;
-        overflow: hidden;
-    }
-
-    .navbar a{
-        display: inline-block;
-        color:white;
+const LayoutDiv = styled.div`
+    a{
         text-decoration: none;
-        padding: 15px;
-        margin:0 2px;
-    }
-
-    .navbar > a:hover{
-        background-color: ${navlinkhover};
-        color: ${navlinktextcolor};
-    }
-    .dropbtn{
-        width: 60px;
-        text-align: center;
-        display:block;
-        padding:8px;
-        margin:0px;
-    }
-
-    div.dropbtn {
-        padding: 15px;
-    }
-    .dropdown:hover .dropbtn{
-        background-color: ${navlinkhover};
-    }
-
-    .dropdown-content{
-        background-color: ${navdropdownhover};
-        z-index: 1;
-        display: none;
-        position: absolute;
-    }
-
-    .dropdown-content a{
-        margin: 0;
-        text-align: center;
-        width: 60px;
-        display:block;
-        color:black !important;
-    }
-    .dropdown-content a:hover{
-        background-color: ${navlinkhover};
-    }
-
-    .logout-btn{
-        margin: 0;
-        padding:15px;
-        text-align: center;
-        width: 60px;
-        cursor:pointer;
-        display:block;
-        color:black !important;
-    }import { useUser } from './../../Auth/useUser';
-
-
-
-    .logout-btn:hover{
-        background-color: ${navlinkhover};
+        color:#000000;
     }
 `

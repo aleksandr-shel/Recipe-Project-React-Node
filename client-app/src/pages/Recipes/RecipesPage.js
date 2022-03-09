@@ -2,23 +2,25 @@ import React from "react";
 import { RecipeList } from "../../components";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useLoggedInContext } from "../../Context/LoggedInContext";
 
 export default function Recipes(){
 
+    const loggedInContext = useLoggedInContext();
 
     return (
         <>
-            <GoButton>
-                <Link to="add-recipe-page">Add Recipe</Link>
-            </GoButton>
+            {
+                loggedInContext.loggedIn && 
+                <GoButton>
+                    <Link to="add-recipe-page">Add Recipe</Link>
+                </GoButton>
+            }
             <RecipeList/>
         </>
     )
 }
 
-const RecipesPage = styled.div`
-
-`
 
 const GoButton = styled.div`
     margin: 8px;

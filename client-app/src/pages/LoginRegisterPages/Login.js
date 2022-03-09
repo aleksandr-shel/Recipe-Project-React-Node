@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import styled from 'styled-components';
 import { useLoggedInContext } from "../../Context/LoggedInContext";
 
-export default function Login(){
+export default function Login({link}){
 
     const [token, setToken] = useToken();
 
@@ -43,7 +43,11 @@ export default function Login(){
         setToken(token);
         setLoadingLogin(false);
         loggedInContext.setLoggedIn(true)
-        navigate('/')
+        if (link){
+            navigate(link)
+        } else {
+            navigate('/')
+        }
     }
 
     function clearInputs(){

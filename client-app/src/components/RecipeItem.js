@@ -1,22 +1,22 @@
-import React from "react"
+import React from "react";
+import { Card, Button } from "react-bootstrap";
+export function RecipeItem(recipe, index, navigate){
 
 
-export function RecipeItem(recipe, index){
+    function selectRecipe(id){
+        navigate(`/recipes/${id}`)
+    }
 
     return(
-        <tr key={index} className="recipe-item">
-            <td>
-                {recipe.recipeName}
-            </td>
-            <td className="recipe-desc">
-                {recipe.description}
-            </td>
-            <td>
-                {recipe.timeToCook}
-            </td>
-            <td>
-                <img alt={recipe.recipeName} src={recipe.imageUrl}/>
-            </td>
-        </tr>
+        <Card key={index} style={{ width: '18rem', flex:'0 1 18rem', margin:"10px"}}>
+            <Card.Img variant="top" src={recipe.imageUrl} style={{height:'16rem'}} />
+            <Card.Body>
+                <Card.Title>{recipe.recipeName}</Card.Title>
+                <Card.Text style={{height:'10rem', overflow:'auto'}}>
+                    {recipe.description}
+                </Card.Text>
+                <Button variant="primary" onClick={()=>selectRecipe(recipe._id)}>More info</Button>
+            </Card.Body>
+        </Card>
     )
 }
