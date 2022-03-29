@@ -20,8 +20,8 @@ export default function Layout(){
     return (
         <LayoutDiv>
             <Navbar bg="light" expand="lg">
-                <Container fluid>
-                    <Navbar.Brand href="/">ALL RECIPES</Navbar.Brand>
+                <Container>
+                    <Navbar.Brand as={Link} to='/'>ALL RECIPES</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
@@ -29,7 +29,6 @@ export default function Layout(){
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <Nav.Link><Link to="random-recipe">Random Recipe</Link></Nav.Link>
                             <Form className="d-flex">
                                 <FormControl
                                 type="search"
@@ -43,7 +42,7 @@ export default function Layout(){
                         <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{loggedInContext.loggedIn ? user?.email : ""}</>} id="navbarScrollingDropdown">
                                 {loggedInContext.loggedIn ? 
                                     <>
-                                        <NavDropdown.Item><Link to="/account-info">Account Info</Link></NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to='/account-info'>Account Info</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={logOut}>Log out</NavDropdown.Item>
                                     </>
@@ -57,7 +56,9 @@ export default function Layout(){
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Outlet/>
+            <Container>
+                <Outlet/>
+            </Container>
         </LayoutDiv>
     )
 }

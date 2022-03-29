@@ -10,7 +10,7 @@ import { useLoggedInContext } from "../../Context/LoggedInContext";
 
 export default function Login({link}){
 
-    const [token, setToken] = useToken();
+    const [, setToken] = useToken();
 
     const loggedInContext = useLoggedInContext()
 

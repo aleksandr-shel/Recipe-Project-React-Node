@@ -174,6 +174,19 @@ const getIngredients = async (req,res)=>{
     })
 }
 
+const giveRating = async(req,res)=>{
+
+}
+
+const makeComment = async(req,res)=>{
+
+}
+
+const removeComment = async(req,res)=>{
+    
+}
+
+
 const getRandomRecipe = async (req,res)=>{
     res.send('random-recipe');
 }

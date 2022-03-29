@@ -30,27 +30,21 @@ export function RecipePostForm(){
 
     function submitNewRecipe(){
         try{
-            // console.log({
-            //         recipeName,
-            //         imageUrl,
-            //         description,
-            //         timeToCook,
-            //         ingredients,
-            //         author
-            //     })
-            const result = axios.post('/api/recipes/add',{
+            axios.post('/api/recipes/add',{
                 recipeName,
                 imageUrl,
                 description,
                 timeToCook,
                 instruction,
                 ingredients,
-                author: user
+                author
             },{
                 headers: {Authorization: `Bearer ${token}`}
+            }).then(response=>{
+                if(response){
+                    navigate('/')
+                }
             })
-
-            console.log(result.data)
         }catch(err){
             console.log(err)
         }
@@ -155,7 +149,7 @@ export function RecipePostForm(){
 
 const RecipeAddFormContainer = styled.div`
     animation: appearsFromRight 1s ease;
-    width: 40%;
+    width: auto;
     max-width: 1200px;
     margin: 0 auto;
 

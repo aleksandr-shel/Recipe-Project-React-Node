@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useLoggedInContext } from "../../Context/LoggedInContext";
 
-export default function Recipes(){
+export default function RecipesPage(){
 
     const loggedInContext = useLoggedInContext();
 

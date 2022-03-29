@@ -9,7 +9,7 @@ import { useLoggedInContext } from "../../Context/LoggedInContext";
 
 export default function Register(){
 
-    const [token, setToken] = useToken();
+    const [, setToken] = useToken();
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [firstName, setFirstName] = useState('');

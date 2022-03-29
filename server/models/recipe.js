@@ -31,11 +31,16 @@ let recipeModel = mongoose.Schema(
             default: ''
         },
         rating:{
-            type:Number
+            type:Number,
+            default:0
         },
         author: {
             type: Object,
             default: {}
+        },
+        comments:{
+            type:[Schema.Types.Mixed],
+            default:[]
         }
     }, 
     {

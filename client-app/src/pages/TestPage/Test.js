@@ -126,7 +126,7 @@ function FunctionAppear(props){
           setDisplayed(!isDisplayed);
       },1000)
       setTimeout(() => {
-          setColor(color == 'red' ? 'blue' : 'red')
+          setColor(color === 'red' ? 'blue' : 'red')
       }, 2000);
   }
   )
