@@ -1,9 +1,9 @@
 # Recipe-Project-React-Node
 Web application for sharing recipes
 
-1) Authentication
-2) Crud operations
-3) Comment on recipes
+1) Authentication Login/Register
+2) Crud operations with recipes
+3) Comment under recipes
 
 Technologies:
 1) Node.Js (Express) - backend
