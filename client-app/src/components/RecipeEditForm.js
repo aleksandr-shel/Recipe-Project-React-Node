@@ -3,7 +3,7 @@ import { Button, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function RecipeEditForm({recipe, setEditMode}){
+export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
     const [recipeName, setRecipeName] = useState('')
     const [imageUrl, setImageUrl] = useState('')
@@ -25,6 +25,22 @@ export default function RecipeEditForm({recipe, setEditMode}){
 
     function handleSubmitEditForm(e){
         e.preventDefault();
+        axios.put(`/api/recipes/${recipe._id}`,{
+            recipeName,
+            imageUrl,
+            description,
+            timeToCook,
+            instruction,
+            ingredients,
+            author
+        },{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response=>{
+            setRecipe(response.data)
+            setEditMode(false);
+        })
     }
 
     function closeEditMode(){
@@ -101,12 +117,6 @@ export default function RecipeEditForm({recipe, setEditMode}){
                             </Form.Label>
                             <Form.Control rows={10} as='textarea' onChange={(e)=>setInstruction(e.target.value)} value={instruction} placeholder='Instruction'/>
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label as='h3'>
-                                Time to Cook:
-                            </Form.Label>
-                            <Form.Control type='text' value={timeToCook} onChange={(e)=>setTimeToCook(e.target.value)} placeholder='Time to Cook'/>
-                        </Form.Group>
                         <Button variant="primary" type="submit" style={{marginTop:'10px'}}>
                             Edit
                         </Button>
@@ -115,6 +125,12 @@ export default function RecipeEditForm({recipe, setEditMode}){
                         </Button>
                     </Col>
                     <Col sm={5}>
+                        <Form.Group>
+                            <Form.Label as='h3'>
+                                Time to Cook:
+                            </Form.Label>
+                            <Form.Control type='text' value={timeToCook} onChange={(e)=>setTimeToCook(e.target.value)} placeholder='Time to Cook'/>
+                        </Form.Group>
                         <Form.Group style={{height:'70rem', overflow:'auto'}}>
                             <Form.Label as='h3'>
                                 Ingredients:

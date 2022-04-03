@@ -1,5 +1,6 @@
 const Recipe = require('../models/recipe');
 const User = require('../models/user');
+const Comment = require('../models/comment')
 
 const jwt = require('jsonwebtoken');
 
@@ -156,7 +157,7 @@ const deleteRecipe = async (req,res)=>{
                                 return res.status(500).send({message:'could not remove in user recipes array'})
                             }
                         })
-                    return res.send({message:'Recipe deleted'});
+                    return res.status(200).send({message:'Recipe deleted'});
                 }
             })
         })
@@ -178,12 +179,58 @@ const giveRating = async(req,res)=>{
 
 }
 
-const makeComment = async(req,res)=>{
+const addComment = async(req,res)=>{
+    const {recipeId} = req.params;
+    const {date, author, comment} = req.body;
 
+    const newComment = new Comment({
+        date,
+        author,
+        comment
+    })
+
+    Recipe.findOneAndUpdate(
+        {_id:recipeId},
+        {$push:{comments:newComment}},
+        {new:true},
+        (err, recipe)=>{
+            if (err){
+                return res.status(400).send(err);
+            }
+            return res.status(200).send(recipe.comments.at(-1));
+    })
 }
 
 const removeComment = async(req,res)=>{
-    
+    const {recipeId} = req.params;
+    const {commentId} = req.body;
+
+    Recipe.findOne(
+        {_id:recipeId},
+        (err, recipe)=>{
+            if (err){
+                return res.status(400).send(err);
+            }
+
+            let comments = recipe.comments.filter(comment =>{
+                return comment._id != commentId
+            })
+
+            Recipe.updateOne({
+                _id:recipeId
+            },{
+                $set:{comments:comments}
+            }, (err)=>{
+                if (err){
+                    return res.status(400).send(err);
+                }
+            })
+
+            // recipe.comments.pop()
+            return res.status(200).send({success:true});
+
+        }
+    )
 }
 
 
@@ -191,6 +238,21 @@ const getRandomRecipe = async (req,res)=>{
     res.send('random-recipe');
 }
 
+const clearComments = async(req,res)=>{
+    const {recipeId} = req.params;
+
+    Recipe.findOneAndUpdate({
+        _id: recipeId
+    },{
+        $set:{comments:[]}
+    },
+    (err, recipe)=>{
+        if (err){
+            return res.status(400).send(err);
+        }
+        return res.status(200).send(recipe.comments);
+    })
+}
 
 module.exports={
     addRecipe,
@@ -199,5 +261,9 @@ module.exports={
     deleteRecipe,
     getRecipes,
     getIngredients,
-    getRandomRecipe
+    getRandomRecipe,
+    addComment,
+    removeComment,
+    giveRating,
+    clearComments
 }

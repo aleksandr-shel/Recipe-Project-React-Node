@@ -1,8 +1,22 @@
 
 let mongoose = require('mongoose');
-
+const Comment = require('../models/comment')
 const {Schema} = mongoose;
 
+// let commentModel = mongoose.Schema({
+//     date: {
+//         type: Date,
+//         default: Date.now()
+//     },
+//     author:{
+//         type:Object,
+//         default:{}
+//     },
+//     comment: {
+//         type: String,
+//         default:''
+//     }
+// })
 
 let recipeModel = mongoose.Schema(
     {
@@ -40,6 +54,7 @@ let recipeModel = mongoose.Schema(
         },
         comments:{
             type:[Schema.Types.Mixed],
+            refs:[Comment],
             default:[]
         }
     }, 

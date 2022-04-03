@@ -30,7 +30,7 @@ export function RecipePostForm(){
 
     function submitNewRecipe(){
         try{
-            axios.post('/api/recipes/add',{
+            axios.post('/api/recipes',{
                 recipeName,
                 imageUrl,
                 description,

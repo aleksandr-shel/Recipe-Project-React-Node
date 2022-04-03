@@ -7,14 +7,20 @@ router.get('/', recipeCtrl.getRecipes);
 
 router.get('/:recipeId', recipeCtrl.getRecipe);
 
-router.post('/add', recipeCtrl.addRecipe);
+router.post('/', recipeCtrl.addRecipe);
 
-router.put('/update/:recipeId', recipeCtrl.updateRecipe);
+router.put('/:recipeId', recipeCtrl.updateRecipe);
 
-router.delete('/delete/:recipeId', recipeCtrl.deleteRecipe);
+router.delete('/:recipeId', recipeCtrl.deleteRecipe);
 
 router.get('/:recipeId/ingredients', recipeCtrl.getIngredients);
 
 router.get('/random-recipe', recipeCtrl.getRandomRecipe);
+
+router.post('/:recipeId/comments', recipeCtrl.addComment)
+
+router.delete('/:recipeId/comments', recipeCtrl.removeComment)
+
+router.put('/:recipeId/comments/clear', recipeCtrl.clearComments)
 
 module.exports = router;
