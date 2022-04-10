@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
-import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form} from 'react-bootstrap';
+import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form, CloseButton, Popover, OverlayTrigger} from 'react-bootstrap';
 import axios from 'axios';
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +19,8 @@ export default function RecipeDetails(){
     const [showDeleteWindow, setShowDeleteWindow] = useState(false);
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
+
+    const [commentIdToDelete, setCommentIdToDelete] = useState('');
 
     function handleEditButton(){
         setEditMode(true);
@@ -55,6 +57,42 @@ export default function RecipeDetails(){
             console.log(error);
         })
     }
+
+    function deleteComment(){
+        if (recipeId && commentIdToDelete !== ''){
+            console.log(recipeId)
+            console.log(commentIdToDelete)
+            axios.delete(`/api/recipes/${recipeId}/comments`,
+            {
+                headers: {Authorization: `Bearer ${token}`},
+                data: {
+                    commentId:commentIdToDelete
+                }
+            }).then(response=>{
+                if(response.status===200){
+                    setComments(comments=> comments.filter(comment => comment._id !== commentIdToDelete));
+                    setCommentIdToDelete('');
+                    document.body.click()
+                }
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
+    }
+
+    const CommentDeletePop = (
+        <Popover id="popover-positioned-top">
+          <Popover.Header as="h3">Delete Comment?</Popover.Header>
+          <Popover.Body>
+              <Button onClick={deleteComment}>
+                  Confirm
+              </Button>
+              <Button variant="secondary" onClick={() => document.body.click()}>
+                  Cancel
+              </Button>
+          </Popover.Body>
+        </Popover>
+      );
 
     return (
         <Container style={{marginBottom:'10%'}}>
@@ -102,8 +140,8 @@ export default function RecipeDetails(){
                                         <Figure.Caption>
                                             <h3>Ingredients</h3>
                                             <ListGroup as="ul">
-                                                {recipe.ingredients.map(ingr=>{
-                                                    return <ListGroup.Item as="li">{ingr}</ListGroup.Item>
+                                                {recipe.ingredients.map((ingr,index)=>{
+                                                    return <ListGroup.Item key={index} as="li">{ingr}</ListGroup.Item>
                                                 })}
                                             </ListGroup>
                                         </Figure.Caption>
@@ -123,9 +161,17 @@ export default function RecipeDetails(){
                             </Form.Group>
                         </Form>
                         <ListGroup style={{overflow:'auto', height:'60em'}}>
-                        {comments.map(comment=>{
+                        {comments.map((comment,index)=>{
                                 {
-                                    return <ListGroup.Item>
+                                    return <ListGroup.Item key={index} style={{position:'relative'}}>
+                                        {
+                                            user.id === comment.author.id &&
+                                            <div style={{position:'absolute', top:'2px', right:'2px'}}>
+                                                <OverlayTrigger rootClose trigger="click" placement="top" overlay={CommentDeletePop}>
+                                                    <CloseButton onClick={()=>setCommentIdToDelete(comment._id)} />
+                                                </OverlayTrigger>
+                                            </div>
+                                        }
                                         <p style={{color:'#2a5885', fontWeight:'bold'}}>
                                          {comment.author.firstName} {comment.author.lastName} 
                                         </p>

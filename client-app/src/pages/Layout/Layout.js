@@ -6,6 +6,7 @@ import { useUser } from '../../Auth/useUser';
 import {Navbar, Container, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
 import {AiOutlineUser} from 'react-icons/ai';
 import styled from 'styled-components';
+import RecipesLogo from './Recipes.png'
 
 export default function Layout(){
 
@@ -21,7 +22,16 @@ export default function Layout(){
         <LayoutDiv>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand as={Link} to='/'>ALL RECIPES</Navbar.Brand>
+                    <Navbar.Brand as={Link} to='/'>
+                        <img 
+                            src={RecipesLogo}
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                            alt="Recipes logo"
+                        />
+                        ALL RECIPES
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
