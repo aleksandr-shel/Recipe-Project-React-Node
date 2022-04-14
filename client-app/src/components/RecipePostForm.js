@@ -126,7 +126,7 @@ export function RecipePostForm(){
                 </li>
                 <li>
                     <label htmlFor="image">Image Url: </label>
-                    <input type="url" id="image" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
+                    <input type="url" id="image" autoComplete="off" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
                 </li>
                 <li>
                     <label>Ingredients: </label>

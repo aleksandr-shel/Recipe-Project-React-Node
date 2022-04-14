@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form, CloseButton, Popover, OverlayTrigger} from 'react-bootstrap';
 import axios from 'axios';
 import {useState, useEffect } from "react";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "../../Auth/useUser";
 import { RecipeDeleteForm, RecipeEditForm } from "../../components";
 import { useToken } from "../../Auth/useToken";
+import { useSocketContext } from "../../Context/socketContext";
 
 
 export default function RecipeDetails(){
@@ -14,6 +15,7 @@ export default function RecipeDetails(){
     const [recipe, setRecipe] = useState()
     const user = useUser();
     const [token,] = useToken();
+    const navigate = useNavigate();
 
     const [editMode, setEditMode] = useState(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState(false);
@@ -21,6 +23,8 @@ export default function RecipeDetails(){
     const [comments, setComments] = useState([]);
 
     const [commentIdToDelete, setCommentIdToDelete] = useState('');
+
+    const {socket} = useSocketContext();
 
     function handleEditButton(){
         setEditMode(true);
@@ -32,7 +36,18 @@ export default function RecipeDetails(){
 
     useEffect(()=>{
         loadRecipe()
+        socket.emit('join-recipe-page', {recipeId})
     },[])
+
+    useEffect(()=>{
+        socket.on('comment-added',(comment)=>{
+            setComments(comments => [comment, ...comments])
+        })
+
+        socket.on('comment-deleted', ({commentId})=>{
+            setComments(comments=> comments.filter(comment => comment._id !== commentId));
+        })
+    },[socket])
 
     function loadRecipe(){
         axios.get(`/api/recipes/${recipeId}`)
@@ -46,6 +61,9 @@ export default function RecipeDetails(){
 
     function addComment(e){
         e.preventDefault()
+        if (!user){
+            navigate('/login')
+        }
         axios.post(`/api/recipes/${recipeId}/comments`,{
             author: user,
             date: new Date(Date.now()).toLocaleString(),
@@ -53,6 +71,7 @@ export default function RecipeDetails(){
         }).then(response=>{
             setComment('');
             setComments(comments => [response.data, ...comments])
+            socket.emit('addComment', {comment:response.data, recipeId})
         }).catch(error=>{
             console.log(error);
         })
@@ -71,6 +90,7 @@ export default function RecipeDetails(){
             }).then(response=>{
                 if(response.status===200){
                     setComments(comments=> comments.filter(comment => comment._id !== commentIdToDelete));
+                    socket.emit('deleteComment', {commentId:commentIdToDelete, recipeId})
                     setCommentIdToDelete('');
                     document.body.click()
                 }
@@ -97,7 +117,7 @@ export default function RecipeDetails(){
     return (
         <Container style={{marginBottom:'10%'}}>
             <Breadcrumb>
-                <Breadcrumb.Item><Link to="/">Recipes List</Link></Breadcrumb.Item>
+                <Breadcrumb.Item onClick={()=>{socket.emit('leave-recipe-page', {recipeId})}} linkAs={Link} linkProps={{to:'/'}}>Recipes List</Breadcrumb.Item>
                 <Breadcrumb.Item active>Recipe Details Page</Breadcrumb.Item>
             </Breadcrumb>
             {
@@ -165,7 +185,7 @@ export default function RecipeDetails(){
                                 {
                                     return <ListGroup.Item key={index} style={{position:'relative'}}>
                                         {
-                                            user.id === comment.author.id &&
+                                            user?.id === comment.author?.id &&
                                             <div style={{position:'absolute', top:'2px', right:'2px'}}>
                                                 <OverlayTrigger rootClose trigger="click" placement="top" overlay={CommentDeletePop}>
                                                     <CloseButton onClick={()=>setCommentIdToDelete(comment._id)} />
@@ -173,7 +193,7 @@ export default function RecipeDetails(){
                                             </div>
                                         }
                                         <p style={{color:'#2a5885', fontWeight:'bold'}}>
-                                         {comment.author.firstName} {comment.author.lastName} 
+                                         {comment.author?.firstName} {comment.author?.lastName} 
                                         </p>
                                         <p style={{fontWeight:'500', fontSize:'1.1em'}}>
                                             {comment.comment}

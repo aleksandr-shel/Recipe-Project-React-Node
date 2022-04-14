@@ -7,8 +7,8 @@
 let app = require('./config/app');
 let debug = require('debug')('api:server');
 let http = require('http');
-const socket = require('socket.io');
-const messageCtrl = require('./controllers/message.controller')
+let socketConfig = require('./config/socketConfig');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -30,12 +30,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-const io = socket(server);
-
-io.on('connection', (socket)=>{
-  messageCtrl.handleRealTime(socket);
-})
-
+socketConfig.addSocket(server);
 /**
  * Normalize a port into a number, string, or false.
  */
