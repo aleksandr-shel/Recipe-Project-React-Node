@@ -25,7 +25,7 @@ export default function Routing(){
                     <Route path="login" element={<Login/>}/>
                     <Route path='register' element={<Register/>}/>
                     <Route path='account-info' element={<AccountInfo/>}/>
-                    <Route path='recipes/:recipeId' element={<RecipeDetails/>}/>
+                    <Route exact path='recipes/:recipeId' element={<RecipeDetails/>}/>
                     <Route path='testpage' element={<Test/>}/>
                     <Route path='test-reducer-example' element={<Todos/>}/>
                 </Route>

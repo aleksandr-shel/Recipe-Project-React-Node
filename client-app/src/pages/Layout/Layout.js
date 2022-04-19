@@ -3,10 +3,11 @@ import React from 'react';
 import {Link, Outlet} from 'react-router-dom';
 import {useLoggedInContext } from '../../Context/LoggedInContext';
 import { useUser } from '../../Auth/useUser';
-import {Navbar, Container, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
+import {Navbar, Container, Nav, NavDropdown} from 'react-bootstrap';
 import {AiOutlineUser} from 'react-icons/ai';
 import styled from 'styled-components';
 import RecipesLogo from './Recipes.png'
+import { RecipeSearchList } from '../../components';
 
 export default function Layout(){
 
@@ -34,20 +35,10 @@ export default function Layout(){
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav
+                        <Nav 
                             className="me-auto my-2 my-lg-0"
-                            style={{ maxHeight: '100px' }}
-                            navbarScroll
                         >
-                            <Form className="d-flex">
-                                <FormControl
-                                type="search"
-                                placeholder="Search for Recipe"
-                                className="me-2"
-                                aria-label="Search"
-                                />
-                                <Button variant="outline-success">Search</Button>
-                            </Form>
+                            <RecipeSearchList/>
                         </Nav>
                         <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{loggedInContext.loggedIn ? user?.email : ""}</>} id="navbarScrollingDropdown">
                                 {loggedInContext.loggedIn ? 

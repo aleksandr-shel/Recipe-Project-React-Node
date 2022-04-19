@@ -254,6 +254,25 @@ const clearComments = async(req,res)=>{
     })
 }
 
+
+const searchForRecipes = async(req,res)=>{
+    const {query} = req.body;
+    Recipe.find(
+        {
+            $or:[
+                {recipeName: new RegExp(query, 'i')},
+                {description: new RegExp(query, 'i')},
+                {ingredients: new RegExp(query, 'i')}
+            ]
+        },
+        (err, result)=>{
+        if (err){
+            return res.status(400).send(err);
+        }
+        return res.status(200).send(result)
+    })
+}
+
 module.exports={
     addRecipe,
     updateRecipe,
@@ -265,5 +284,6 @@ module.exports={
     addComment,
     removeComment,
     giveRating,
-    clearComments
+    clearComments,
+    searchForRecipes
 }

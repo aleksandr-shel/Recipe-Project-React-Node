@@ -20,7 +20,6 @@ export function RecipeList(){
 
     return(
         <>
-            <h1 style={{textAlign:'center'}}>Recipes</h1>
             <RecipeListDiv>
                 {recipes?.map((recipe, index) => RecipeItem(recipe, index, navigate))}
             </RecipeListDiv>
@@ -31,7 +30,7 @@ export function RecipeList(){
 const RecipeListDiv = styled.div`
     display:flex;
     flex-wrap: wrap;
-    animation: appearsFromLeft 1s ease;
+    /* animation: appearsFromLeft 1s ease; */
     @keyframes appearsFromLeft {
         from{transform: translate(-50vw,0);}
         to{transform: translate(0);}

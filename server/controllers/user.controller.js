@@ -131,11 +131,27 @@ const uploadImage = async (req,res)=>{
       }
 }
 
+const checkToken = async (req,res)=>{
+  const {authorization} = req.headers;
+  if (!authorization){
+    return res.status(401).json({message:'no authorization header sent'})
+  }
+
+  const token = authorization.splot(' ')[1];
+  jwt.verify(token, process.env.JWT_SECRET, async(err, decoded)=>{
+    if (err){
+      return res.status(401).json({message:'unable to verify token or token has expired'})
+    }
+
+    return res.status(200).json({message: 'all good'})
+  })
+}
 
 module.exports = {
     getUsers,
     register,
     login,
     deleteUser,
-    uploadImage
+    uploadImage,
+    checkToken
 }

@@ -23,4 +23,6 @@ router.delete('/:recipeId/comments', recipeCtrl.removeComment)
 
 router.put('/:recipeId/comments/clear', recipeCtrl.clearComments)
 
+router.post('/search', recipeCtrl.searchForRecipes)
+
 module.exports = router;

@@ -15,4 +15,6 @@ router.delete('/delete/:id', userCtrl.deleteUser)
 
 router.post('/upload-avatar', userCtrl.uploadImage)
 
+router.post('/checkToken', userCtrl.checkToken)
+
 module.exports = router;
