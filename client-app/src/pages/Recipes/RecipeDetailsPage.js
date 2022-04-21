@@ -37,7 +37,7 @@ export default function RecipeDetails(){
     useEffect(()=>{
         loadRecipe()
         socket.emit('join-recipe-page', {recipeId})
-    },[])
+    },[recipeId])
 
     useEffect(()=>{
         socket.on('comment-added',(comment)=>{
