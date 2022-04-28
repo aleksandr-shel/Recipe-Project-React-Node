@@ -2,8 +2,8 @@ import React from "react";
 import axios from 'axios'
 import styled from 'styled-components';
 import {useState, useEffect} from 'react';
-import { useUser } from './../Auth/useUser';
-import { useToken } from './../Auth/useToken';
+import { useUser } from '../Auth/useUser';
+import { useToken } from '../Auth/useToken';
 import { useNavigate } from "react-router";
 
 export function RecipePostForm(){

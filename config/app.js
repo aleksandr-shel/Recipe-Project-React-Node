@@ -25,7 +25,7 @@ let recipeRouting = require('../routes/recipe.routes');
 
 let app = express();
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(fileUpload({
     createParentPath: true
@@ -45,7 +45,7 @@ app.use('/api/users', userRouting);
 app.use('/api/recipes', recipeRouting);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+    res.sendFile(path.join(__dirname+'../client/build/index.html'));
   });
 
 

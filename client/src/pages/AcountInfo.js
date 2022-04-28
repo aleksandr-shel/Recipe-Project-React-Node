@@ -1,5 +1,5 @@
 import React from "react";
-import { useUser } from './../Auth/useUser';
+import { useUser } from '../Auth/useUser';
 
 
 export default function AccountInfo(){

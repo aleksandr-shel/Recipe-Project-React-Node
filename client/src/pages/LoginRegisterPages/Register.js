@@ -2,7 +2,7 @@ import React from "react";
 import {useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import { useToken } from './../../Auth/useToken';
+import { useToken } from '../../Auth/useToken';
 import axios from "axios";
 import styled from "styled-components";
 import { useLoggedInContext } from "../../Context/LoggedInContext";
