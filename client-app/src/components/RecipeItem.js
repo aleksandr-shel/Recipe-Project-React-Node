@@ -9,7 +9,7 @@ export function RecipeItem(recipe, index, navigate){
     }
 
     return(
-        <Card key={index} style={{flex:'0 1 14rem', margin:"10px"}}>
+        <Card key={index} style={{flex:'0 1 16rem', margin:"10px"}}>
             <Card.Img as='img' variant="top" src={recipe.imageUrl} style={{height:'100%', width:'100%'}} />
             <Card.Body>
                 <Card.Title>{recipe.recipeName}</Card.Title>

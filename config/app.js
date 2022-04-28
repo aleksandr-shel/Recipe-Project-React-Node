@@ -25,6 +25,8 @@ let recipeRouting = require('../routes/recipe.routes');
 
 let app = express();
 
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 app.use(fileUpload({
     createParentPath: true
 }));
@@ -41,6 +43,10 @@ app.use(cookieParser());
 //routing
 app.use('/api/users', userRouting);
 app.use('/api/recipes', recipeRouting);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
 
 
 // catch 404 and forward to error handler

@@ -115,7 +115,7 @@ export default function RecipeDetails(){
       );
 
     return (
-        <Container style={{marginBottom:'10%'}}>
+        <Container style={{marginBottom:'10%'}} className='w-75'>
             <Breadcrumb>
                 <Breadcrumb.Item onClick={()=>{socket.emit('leave-recipe-page', {recipeId})}} linkAs={Link} linkProps={{to:'/'}}>Recipes List</Breadcrumb.Item>
                 <Breadcrumb.Item active>Recipe Details Page</Breadcrumb.Item>
