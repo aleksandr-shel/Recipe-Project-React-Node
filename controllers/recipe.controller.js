@@ -21,6 +21,8 @@ const addRecipe = async (req,res)=>{
             recipeName: req.body.recipeName,
             imageUrl: req.body.imageUrl,
             ingredients: req.body.ingredients,
+            cuisine: req.body.cuisine,
+            category: req.body.category,
             description: req.body.description,
             instruction: req.body.instruction,
             timeToCook: req.body.timeToCook,
@@ -93,6 +95,8 @@ const updateRecipe = async (req,res)=>{
             recipeName: req.body.recipeName,
             imageUrl: req.body.imageUrl,
             ingredients: req.body.ingredients,
+            cuisine: req.body.cuisine,
+            category: req.body.category,
             description: req.body.description,
             instruction: req.body.instruction,
             timeToCook: req.body.timeToCook

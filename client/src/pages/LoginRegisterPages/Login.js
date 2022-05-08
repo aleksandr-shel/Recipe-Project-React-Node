@@ -7,6 +7,7 @@ import { useToken } from "../../Auth/useToken";
 import { useEffect } from "react";
 import styled from 'styled-components';
 import { useLoggedInContext } from "../../Context/LoggedInContext";
+import getPayloadFromToken from './../../Auth/GetPayloadFromToken';
 
 export default function Login({link}){
 
@@ -27,7 +28,6 @@ export default function Login({link}){
         }, 5000);
     }, [showErrorMessage])
 
-
     async function onLogin(){
         setLoadingLogin(true);
 
@@ -42,7 +42,8 @@ export default function Login({link}){
         const {token} = result.data;
         setToken(token);
         setLoadingLogin(false);
-        loggedInContext.setLoggedIn(true)
+        loggedInContext.setLoggedIn(true);
+        loggedInContext.setUser(getPayloadFromToken(token));
         if (link){
             navigate(link)
         } else {

@@ -9,6 +9,7 @@ import AddRecipePage from "./pages/Recipes/AddRecipePage";
 import { useLoggedInContext } from "./Context/LoggedInContext";
 import AccountInfo from "./pages/AcountInfo";
 import RecipeDetails from "./pages/Recipes/RecipeDetailsPage";
+import NotFound from "./pages/NotFound";
 // import { useLocation } from "react-router-dom";
 
 export default function Routing(){
@@ -27,6 +28,7 @@ export default function Routing(){
                     <Route exact path='recipes/:recipeId' element={<RecipeDetails/>}/>
                     <Route path='testpage' element={<Test/>}/>
                     <Route path='test-reducer-example' element={<Todos/>}/>
+                    <Route element={<NotFound/>}/>
                 </Route>
             </Routes>
     )

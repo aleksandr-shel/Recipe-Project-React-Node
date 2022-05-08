@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
-import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form, CloseButton, Popover, OverlayTrigger} from 'react-bootstrap';
+import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form, CloseButton, Popover, OverlayTrigger, Image} from 'react-bootstrap';
 import axios from 'axios';
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useUser } from "../../Auth/useUser";
 import { RecipeDeleteForm, RecipeEditForm } from "../../components";
 import { useToken } from "../../Auth/useToken";
 import { useSocketContext } from "../../Context/socketContext";
-
+import {useLoggedInContext } from '../../Context/LoggedInContext';
 
 export default function RecipeDetails(){
     const {recipeId} = useParams();
@@ -16,6 +16,8 @@ export default function RecipeDetails(){
     const user = useUser();
     const [token,] = useToken();
     const navigate = useNavigate();
+
+    const loggedInContext = useLoggedInContext()
 
     const [editMode, setEditMode] = useState(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState(false);
@@ -115,7 +117,7 @@ export default function RecipeDetails(){
       );
 
     return (
-        <Container style={{marginBottom:'10%'}} className='w-75'>
+        <Container style={{marginBottom:'5%'}} style={{width:'80vw'}}>
             <Breadcrumb>
                 <Breadcrumb.Item onClick={()=>{socket.emit('leave-recipe-page', {recipeId})}} linkAs={Link} linkProps={{to:'/'}}>Recipes List</Breadcrumb.Item>
                 <Breadcrumb.Item active>Recipe Details Page</Breadcrumb.Item>
@@ -133,16 +135,32 @@ export default function RecipeDetails(){
                                 </Figure.Caption>
                                 <Row>
                                     <Col md={8}>
-                                        <Figure.Image
-                                            width={300}
+                                        <Image
+                                            className="img-fluid"
                                             src={recipe.imageUrl}/>
                                         <Figure.Caption>
                                             <h3>Description</h3>
                                             {recipe.description}
                                         </Figure.Caption>
                                         <Figure.Caption>
-                                            <h3>Instruction</h3>
-                                            {recipe.instruction}
+                                            <h3>Instructions</h3>
+                                            <ListGroup numbered>
+                                                {recipe.instruction.map((step, index)=>(
+                                                    <ListGroup.Item key={index}>
+                                                        <Row>
+                                                            {
+                                                                step.img &&
+                                                                <Col sm={5}>
+                                                                    <Image src={step.img} className="img-thumbnail"/>
+                                                                </Col>
+                                                            }
+                                                            <Col>
+                                                                {step.description}
+                                                            </Col>
+                                                        </Row>
+                                                    </ListGroup.Item>
+                                                ))}
+                                            </ListGroup>
                                         </Figure.Caption>
                                     </Col>
                                     <Col md={4}>
@@ -173,13 +191,15 @@ export default function RecipeDetails(){
                 
                     <Col md={3}>
                         <h3>Comments</h3>
-                        <Form onSubmit={e=>addComment(e)}>
-                            
-                            <Form.Group style={{padding:'6px'}}>
-                                <Form.Control placeholder='Leave a comment' required value={comment} onChange={e=>setComment(e.target.value)}/>
-                                <Button style={{margin:'5px'}} type='submit'>Comment</Button>
-                            </Form.Group>
-                        </Form>
+                        {
+                            loggedInContext.loggedIn &&
+                            <Form onSubmit={e=>addComment(e)}>
+                                <Form.Group style={{padding:'6px'}}>
+                                    <Form.Control placeholder='Leave a comment' required value={comment} onChange={e=>setComment(e.target.value)}/>
+                                    <Button style={{margin:'5px'}} type='submit'>Comment</Button>
+                                </Form.Group>
+                            </Form>
+                        }
                         <ListGroup style={{overflow:'auto', height:'60em'}}>
                         {comments.map((comment,index)=>{
                                 {

@@ -1,10 +1,8 @@
 import React from "react";
 import { RecipeList } from "../../components";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { useLoggedInContext } from "../../Context/LoggedInContext";
-import { useSocketContext } from "../../Context/socketContext";
-
+import {Button} from 'react-bootstrap';
 
 export default function RecipesPage(){
 
@@ -15,27 +13,11 @@ export default function RecipesPage(){
         <>
             {
                 loggedInContext.loggedIn && 
-                <GoButton>
-                    <Link to="add-recipe-page">Add Recipe</Link>
-                </GoButton>
+                <Button as={Link} to='add-recipe-page' variant='outline-dark' className='m-2'>
+                    Add Recipe
+                </Button>
             }
             <RecipeList/>
         </>
     )
 }
-
-
-const GoButton = styled.div`
-    margin: 8px;
-    a {
-        text-decoration: none;
-        cursor: pointer;
-        margin: auto;
-        padding: 4px;
-        border: none;
-        background: #333;
-        color: #f2f2f2;
-        letter-spacing: .09em;
-        border-radius: 2px;
-    }
-`

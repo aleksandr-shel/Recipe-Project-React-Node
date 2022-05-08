@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, Outlet} from 'react-router-dom';
 import {useLoggedInContext } from '../../Context/LoggedInContext';
 import { useUser } from '../../Auth/useUser';
@@ -17,7 +17,15 @@ export default function Layout(){
     function logOut(){
         localStorage.removeItem('token')
         loggedInContext.setLoggedIn(false)
+        loggedInContext.setUser('');
     }
+
+    useEffect(()=>{
+        if (user){
+            loggedInContext.setUser(user);
+        }
+    },[loggedInContext, user])
+
 
     return (
         <LayoutDiv>
@@ -40,7 +48,7 @@ export default function Layout(){
                         >
                             <RecipeSearchList/>
                         </Nav>
-                        <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{loggedInContext.loggedIn ? user?.email : ""}</>} id="navbarScrollingDropdown">
+                        <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{loggedInContext.User?.email}</>} id="navbarScrollingDropdown">
                                 {loggedInContext.loggedIn ? 
                                     <>
                                         <NavDropdown.Item as={Link} to='/account-info'>Account Info</NavDropdown.Item>

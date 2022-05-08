@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, Form, Button, FormControl, Row} from "react-bootstrap";
+import { ListGroup, Form, Button, FormControl, Row, Image} from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -56,7 +56,7 @@ export default function RecipeSearchList(){
                         {recipes.map((recipe, index)=>{
                             return(
                                 <ListGroup.Item key={index} className='d-flex' onClick={()=>{navigate(`/recipes/${recipe._id}`)}}>
-                                    <img src={recipe.imageUrl} alt='no image' style={{width:'40px'}} className='mx-2 my-auto'/>
+                                    <Image src={recipe.imageUrl} alt='no image' style={{width:'50px'}} className='mx-2 my-auto img-thumbnail'/>
                                     <div className='mx-2 my-auto'>
                                         {recipe.recipeName}
                                     </div>

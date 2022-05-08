@@ -6,6 +6,8 @@ import { useToken } from '../../Auth/useToken';
 import axios from "axios";
 import styled from "styled-components";
 import { useLoggedInContext } from "../../Context/LoggedInContext";
+import getPayloadFromToken from './../../Auth/GetPayloadFromToken';
+
 
 export default function Register(){
 
@@ -53,6 +55,7 @@ export default function Register(){
         setToken(token);
         setLoadingRegister(false);
         loggedInContext.setLoggedIn(true);
+        loggedInContext.setUser(getPayloadFromToken(token));
         navigate('/')
     }
     return (

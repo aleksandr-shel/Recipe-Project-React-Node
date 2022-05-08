@@ -9,9 +9,10 @@ const socket = io.connect('/');
 
 export default function App(){
   const [loggedIn, setLoggedIn] = useState(false);
+  const [User, setUser] = useState(false);
   return (
     <SocketContext.Provider value={{socket}}>
-      <LoggedInContext.Provider value={{loggedIn, setLoggedIn}}>
+      <LoggedInContext.Provider value={{loggedIn, setLoggedIn, User, setUser}}>
         <Routing/>
       </LoggedInContext.Provider>
     </SocketContext.Provider>

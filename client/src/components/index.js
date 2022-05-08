@@ -1,9 +1,9 @@
 
 import { RecipeList } from './RecipeList';
-import { RecipePostForm } from './RecipePostForm';
 import RecipeDeleteForm from './RecipeDeleteForm';
-import RecipeEditForm from './RecipeEditForm';
+import RecipeEditForm from './RecipeDetails/RecipeEditForm';
 import RecipeSearchList from './RecipeSearchList';
+import RecipePostForm from './RecipePostForm';
 
 
 export {RecipeList, RecipePostForm, RecipeDeleteForm, RecipeEditForm, RecipeSearchList};

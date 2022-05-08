@@ -1,7 +1,9 @@
 import React from "react";
-import { Button, Form, ListGroup, Col, Row } from 'react-bootstrap';
+import { Button, Form, Col, Row } from 'react-bootstrap';
 import { useState, useEffect } from "react";
+import IngredientsList from './IngredientList';
 import axios from "axios";
+import InstructionList from "./InstructionList";
 
 export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
@@ -9,9 +11,11 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
     const [imageUrl, setImageUrl] = useState('')
     const [description, setDescription] = useState('')
     const [timeToCook, setTimeToCook] = useState('')
-    const [instruction, setInstruction] = useState('')
+    const [instruction, setInstruction] = useState([])
     const [author, setAuthor] = useState({})
     const [ingredients, setIngredients] = useState([])
+    const [cuisine, setCuisine] = useState([])
+    const [category, setCategory] = useState([])
 
     useEffect(()=>{
         setRecipeName(recipe.recipeName)
@@ -21,6 +25,8 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
         setTimeToCook(recipe.timeToCook)
         setAuthor(recipe.author)
         setIngredients(recipe.ingredients)
+        setCategory(recipe.category);
+        setCuisine(recipe.cuisine);
     },[])
 
     function handleSubmitEditForm(e){
@@ -32,7 +38,9 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
             timeToCook,
             instruction,
             ingredients,
-            author
+            author,
+            cuisine,
+            category
         },{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -47,46 +55,6 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
         setEditMode(false);
     }
 
-    function handleIngredientsChange(value, index){
-
-        setIngredients(ingrds => {
-            let newArr = [...ingrds]
-            newArr[index] = value;
-            return newArr;
-        })
-    }
-
-    function addIngredientInput(){
-        setIngredients(ingrds => [...ingrds, ''])
-    }
-
-    function deleteIngredientInput(index){
-        setIngredients(ingrds =>{
-            let newArr = [...ingrds];
-            newArr.splice(index, 1);
-            return newArr;
-        })
-    }
-    const IngredientsInputs = 
-    <ListGroup as="ul" sm={4}>
-        {ingredients.map((ingr, index)=>
-            {
-                return (<ListGroup.Item as='li' key={index}>
-                            <Row>
-                                <Col sm={10}>
-                                    <Form.Control type='text' placeholder="Ingredient" value={ingr} onChange={(e)=>{handleIngredientsChange(e.target.value, index)}} />
-                                </Col>
-                                <Col sm={2}>
-                                    <Button variant='danger' onClick={()=>deleteIngredientInput(index)}>X</Button>
-                                </Col>
-                            </Row>
-                        </ListGroup.Item>)
-            })
-        }
-        <ListGroup.Item as='li'>
-            <Button variant='success' onClick={addIngredientInput}>Add Ingredient</Button>
-        </ListGroup.Item>
-    </ListGroup>;
     return(
         <>
             <Form onSubmit={handleSubmitEditForm}>
@@ -113,9 +81,10 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
-                                Instruction:
+                                Instructions:
                             </Form.Label>
-                            <Form.Control rows={10} as='textarea' onChange={(e)=>setInstruction(e.target.value)} value={instruction} placeholder='Instruction'/>
+                            <InstructionList instruction={instruction} setInstruction={setInstruction}/>
+                            {/* <Form.Control rows={10} as='textarea' onChange={(e)=>setInstruction(e.target.value)} value={instruction} placeholder='Instruction'/> */}
                         </Form.Group>
                         <Button variant="primary" type="submit" style={{marginTop:'10px'}}>
                             Edit
@@ -131,11 +100,23 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                             </Form.Label>
                             <Form.Control type='text' value={timeToCook} onChange={(e)=>setTimeToCook(e.target.value)} placeholder='Time to Cook'/>
                         </Form.Group>
+                        <Form.Group>
+                            <Form.Label as='h3'>
+                                Cuisine:
+                            </Form.Label>
+                            <Form.Control type='text' value={cuisine} onChange={(e)=>setCuisine(e.target.value)} placeholder='Cuisine'/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label as='h3'>
+                                Category:
+                            </Form.Label>
+                            <Form.Control type='text' value={category} onChange={(e)=>setCategory(e.target.value)} placeholder='Category'/>
+                        </Form.Group>
                         <Form.Group style={{height:'70rem', overflow:'auto'}}>
                             <Form.Label as='h3'>
                                 Ingredients:
                             </Form.Label>
-                            {IngredientsInputs}
+                            <IngredientsList ingredients={ingredients} setIngredients={setIngredients}/>
                         </Form.Group>
                     </Col>
                 </Row>

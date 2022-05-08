@@ -37,12 +37,20 @@ let recipeModel = mongoose.Schema(
             default: ''
         },
         instruction:{
-            type:String,
-            default:''
+            type: [Schema.Types.Mixed],
+            default:[]
         },
         timeToCook: {
             type: String,
             default: ''
+        },
+        category:{
+            type:String,
+            default:''
+        },
+        cuisine:{
+            type:String,
+            default:''
         },
         rating:{
             type:Number,
