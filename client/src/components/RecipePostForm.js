@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Button, Form, Col, Row, Image } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import IngredientsList from './RecipeDetails/IngredientList';
 import axios from "axios";
@@ -7,6 +7,9 @@ import InstructionList from "./RecipeDetails/InstructionList";
 import { useUser} from '../Auth/useUser';
 import { useToken } from "../Auth/useToken";
 import { useNavigate } from "react-router-dom";
+import cuisines from "./SelectOptions/cuisines";
+import Select from 'react-select';
+import categories from "./SelectOptions/categories";
 
 export default function RecipePostForm(){
 
@@ -18,8 +21,10 @@ export default function RecipePostForm(){
     const [instruction, setInstruction] = useState([])
     const [author, setAuthor] = useState({})
     const [ingredients, setIngredients] = useState([])
-    const [cuisine, setCuisine] = useState([])
+    const [cuisine, setCuisine] = useState('')
     const [category, setCategory] = useState([])
+    const [categorySelect, setCategorySelect] = useState([])
+
 
     const [token,] = useToken();
     const navigate = useNavigate();
@@ -30,6 +35,7 @@ export default function RecipePostForm(){
 
     function handleSubmitEditForm(e){
         e.preventDefault();
+
         axios.post(`/api/recipes`,{
             recipeName,
             imageUrl,
@@ -63,7 +69,7 @@ export default function RecipePostForm(){
                                 Image URL:
                             </Form.Label>
                             <Form.Control type='url' value={imageUrl} type='text' onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Image URL'/>
-                            <img alt='no image' src={imageUrl} height={300} style={{margin:'10px'}}/>
+                            <Image alt='no image' src={imageUrl} className='img-fluid' style={{margin:'10px'}}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
@@ -82,7 +88,6 @@ export default function RecipePostForm(){
                                 Instructions:
                             </Form.Label>
                             <InstructionList instruction={instruction} setInstruction={setInstruction}/>
-                            {/* <Form.Control rows={10} as='textarea' onChange={(e)=>setInstruction(e.target.value)} value={instruction} placeholder='Instruction'/> */}
                         </Form.Group>
                         <Button variant="primary" type="submit" style={{marginTop:'10px'}}>
                             Share Recipe
@@ -102,13 +107,31 @@ export default function RecipePostForm(){
                             <Form.Label as='h3'>
                                 Cuisine:
                             </Form.Label>
-                            <Form.Control type='text' value={cuisine} onChange={(e)=>setCuisine(e.target.value)} placeholder='Cuisine'/>
+                            <Form.Select value={cuisine} onChange={(e)=>setCuisine(e.target.value)} placeholder='Cuisine'>
+                                {cuisines.map((cuisine,index)=>{
+                                    return (
+                                        <option key={index} value={cuisine}>{cuisine}</option>
+                                    )
+                                })}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
                                 Category:
                             </Form.Label>
-                            <Form.Control type='text' value={category} onChange={(e)=>setCategory(e.target.value)} placeholder='Category'/>
+                            <Select 
+                                value={categorySelect}
+                                onChange={(selected)=>{
+                                    setCategorySelect(selected);
+                                    let categoryArray = []
+                                    selected.forEach(cat =>{
+                                        categoryArray.push(cat.value);
+                                    })
+                                    setCategory(categoryArray);
+                                }}
+                                isMulti
+                                options={categories}
+                            />
                         </Form.Group>
                         <Form.Group style={{height:'70rem', overflow:'auto'}}>
                             <Form.Label as='h3'>

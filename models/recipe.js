@@ -45,8 +45,8 @@ let recipeModel = mongoose.Schema(
             default: ''
         },
         category:{
-            type:String,
-            default:''
+            type:[String],
+            default:[]
         },
         cuisine:{
             type:String,

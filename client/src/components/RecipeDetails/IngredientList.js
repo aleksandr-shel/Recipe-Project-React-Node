@@ -41,7 +41,7 @@ export default function IngredientList({ingredients, setIngredients}){
                 })
             }
             <ListGroup.Item as='li'>
-                <Button variant='success' onClick={addIngredientInput}>Add Ingredient</Button>
+                <Button variant='outline-success' onClick={addIngredientInput}>Add Ingredient</Button>
             </ListGroup.Item>
         </ListGroup>
     )

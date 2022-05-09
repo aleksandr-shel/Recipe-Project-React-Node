@@ -5,7 +5,7 @@ import axios from 'axios';
 import { RecipeItem } from "./RecipeItem";
 import { useNavigate } from "react-router-dom";
 
-export function RecipeList(){
+export default function RecipeList(){
     const [recipes, setRecipes] = useState([]);
 
     const navigate = useNavigate();

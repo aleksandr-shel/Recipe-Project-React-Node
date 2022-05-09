@@ -1,5 +1,5 @@
 
-import { RecipeList } from './RecipeList';
+import RecipeList from './RecipesList/RecipeList';
 import RecipeDeleteForm from './RecipeDeleteForm';
 import RecipeEditForm from './RecipeDetails/RecipeEditForm';
 import RecipeSearchList from './RecipeSearchList';

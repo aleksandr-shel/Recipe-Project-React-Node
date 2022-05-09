@@ -42,15 +42,15 @@ export default function InstructionList({instruction, setInstruction}){
                                 {
                                     instr.img && 
                                     <Col sm={4}>
-                                        <Image src={instr.img || ''} className='img-thumbnail'/>
+                                        <Image src={instr.img || ''} className='img-thumbnail m-2'/>
                                     </Col>
                                 }
                                 <Col>
-                                    <Form.Control type='text' placeholder="Instruction Image URL" value={instr.img || ''} onChange={(e)=>{handleInstructionImgChange(e.target.value, index)}} />
-                                    <Form.Control as='textarea' placeholder="Instruction Description" value={instr.description} onChange={(e)=>{handleInstructionDescChange(e.target.value, index)}} />
+                                    <Form.Control type='text' className='m-2' placeholder="Instruction Image URL" value={instr.img || ''} onChange={(e)=>{handleInstructionImgChange(e.target.value, index)}} />
+                                    <Form.Control as='textarea' className='m-2' placeholder="Instruction Description" value={instr.description} onChange={(e)=>{handleInstructionDescChange(e.target.value, index)}} />
                                 </Col>
-                                <Col sm={2}>
-                                    <Button variant='danger' onClick={()=>deleteInstructionStepInput(index)}>X</Button>
+                                <Col sm={1}>
+                                    <Button variant='danger' className='m-2' onClick={()=>deleteInstructionStepInput(index)}>X</Button>
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -58,7 +58,7 @@ export default function InstructionList({instruction, setInstruction}){
                 })
             }
             <ListGroup.Item as='li'>
-                <Button variant='success' onClick={addInstructionStepInput}>Add Instruction</Button>
+                <Button variant='outline-success' onClick={addInstructionStepInput}>Add Instruction</Button>
             </ListGroup.Item>
         </ListGroup>
     )

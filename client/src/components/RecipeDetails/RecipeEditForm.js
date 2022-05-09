@@ -1,9 +1,12 @@
 import React from "react";
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Button, Form, Col, Row, Image} from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import IngredientsList from './IngredientList';
 import axios from "axios";
 import InstructionList from "./InstructionList";
+import cuisines from "../SelectOptions/cuisines";
+import Select from 'react-select';
+import categories from "../SelectOptions/categories";
 
 export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
@@ -14,8 +17,9 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
     const [instruction, setInstruction] = useState([])
     const [author, setAuthor] = useState({})
     const [ingredients, setIngredients] = useState([])
-    const [cuisine, setCuisine] = useState([])
+    const [cuisine, setCuisine] = useState('')
     const [category, setCategory] = useState([])
+    const [categorySelect, setCategorySelect] = useState([])
 
     useEffect(()=>{
         setRecipeName(recipe.recipeName)
@@ -25,7 +29,11 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
         setTimeToCook(recipe.timeToCook)
         setAuthor(recipe.author)
         setIngredients(recipe.ingredients)
-        setCategory(recipe.category);
+        let categoryArray = []
+        recipe.category.forEach(cat =>{
+            categoryArray.push({value:cat, label:cat});
+        })
+        setCategorySelect(categoryArray);
         setCuisine(recipe.cuisine);
     },[])
 
@@ -65,7 +73,7 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                                 Image URL:
                             </Form.Label>
                             <Form.Control type='url' value={imageUrl} type='text' onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Image URL'/>
-                            <img alt='no image' src={imageUrl} height={300} style={{margin:'10px'}}/>
+                            <Image alt='no image' className='img-fluid' src={imageUrl} height={300} style={{margin:'10px'}}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
@@ -104,13 +112,31 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                             <Form.Label as='h3'>
                                 Cuisine:
                             </Form.Label>
-                            <Form.Control type='text' value={cuisine} onChange={(e)=>setCuisine(e.target.value)} placeholder='Cuisine'/>
+                            <Form.Select value={cuisine} onChange={(e)=>setCuisine(e.target.value)} placeholder='Cuisine'>
+                                {cuisines.map((cuisine,index)=>{
+                                    return (
+                                        <option key={index} value={cuisine}>{cuisine}</option>
+                                    )
+                                })}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
                                 Category:
                             </Form.Label>
-                            <Form.Control type='text' value={category} onChange={(e)=>setCategory(e.target.value)} placeholder='Category'/>
+                            <Select 
+                                value={categorySelect}
+                                onChange={(selected)=>{
+                                    setCategorySelect(selected);
+                                    let categoryArray = []
+                                    selected.forEach(cat =>{
+                                        categoryArray.push(cat.value);
+                                    })
+                                    setCategory(categoryArray);
+                                }}
+                                isMulti
+                                options={categories}
+                            />
                         </Form.Group>
                         <Form.Group style={{height:'70rem', overflow:'auto'}}>
                             <Form.Label as='h3'>

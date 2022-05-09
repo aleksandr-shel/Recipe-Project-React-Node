@@ -37,9 +37,18 @@ export default function RecipeDetails(){
     }
 
     useEffect(()=>{
+        function loadRecipe(){
+            axios.get(`/api/recipes/${recipeId}`)
+            .then(response=>{
+                setRecipe(response.data);
+                setComments(response.data.comments.reverse());
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
         loadRecipe()
         socket.emit('join-recipe-page', {recipeId})
-    },[recipeId])
+    },[recipeId, socket])
 
     useEffect(()=>{
         socket.on('comment-added',(comment)=>{
@@ -50,16 +59,6 @@ export default function RecipeDetails(){
             setComments(comments=> comments.filter(comment => comment._id !== commentId));
         })
     },[socket])
-
-    function loadRecipe(){
-        axios.get(`/api/recipes/${recipeId}`)
-        .then(response=>{
-            setRecipe(response.data);
-            setComments(response.data.comments.reverse());
-        }).catch(error=>{
-            console.log(error);
-        })
-    }
 
     function addComment(e){
         e.preventDefault()
@@ -131,21 +130,21 @@ export default function RecipeDetails(){
                             recipe &&
                             <Figure>
                                 <Figure.Caption>
-                                    <h1>{recipe.recipeName}</h1>    
+                                    <h1>{recipe?.recipeName}</h1>    
                                 </Figure.Caption>
                                 <Row>
                                     <Col md={8}>
                                         <Image
                                             className="img-fluid"
-                                            src={recipe.imageUrl}/>
+                                            src={recipe?.imageUrl}/>
                                         <Figure.Caption>
                                             <h3>Description</h3>
-                                            {recipe.description}
+                                            {recipe?.description}
                                         </Figure.Caption>
                                         <Figure.Caption>
                                             <h3>Instructions</h3>
                                             <ListGroup numbered>
-                                                {recipe.instruction.map((step, index)=>(
+                                                {recipe?.instruction.map((step, index)=>(
                                                     <ListGroup.Item key={index}>
                                                         <Row>
                                                             {
@@ -165,7 +164,7 @@ export default function RecipeDetails(){
                                     </Col>
                                     <Col md={4}>
                                         {
-                                            user?.id === recipe.author.id &&
+                                            loggedInContext.User?.id === recipe.author.id &&
                                             <div>
                                                 <Button variant="outline-primary" onClick={handleEditButton}>Edit</Button>{' '}
                                                 <Button variant="outline-danger" onClick={handleDeleteButton}>Delete</Button>
@@ -173,12 +172,22 @@ export default function RecipeDetails(){
                                         }
                                         <Figure.Caption>
                                             <h3>Time to Cook</h3>
-                                            {recipe.timeToCook}
+                                            {recipe?.timeToCook}
+                                        </Figure.Caption>
+                                        <Figure.Caption>
+                                            <h3>Cuisine</h3>
+                                            {recipe?.cuisine}
+                                        </Figure.Caption>
+                                        <Figure.Caption>
+                                            <h3>Category</h3>
+                                            <div className='d-flex flex-wrap'>
+                                                {recipe?.category.map((cat,index)=><div className='p-2 border border-secondary' key={index}>{cat}</div>)}
+                                            </div>
                                         </Figure.Caption>
                                         <Figure.Caption>
                                             <h3>Ingredients</h3>
                                             <ListGroup as="ul">
-                                                {recipe.ingredients.map((ingr,index)=>{
+                                                {recipe?.ingredients.map((ingr,index)=>{
                                                     return <ListGroup.Item key={index} as="li">{ingr}</ListGroup.Item>
                                                 })}
                                             </ListGroup>
