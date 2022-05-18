@@ -33,11 +33,11 @@ export default function InstructionList({instruction, setInstruction}){
     }
 
     return (
-        <ListGroup>
+        <ListGroup as="ol" numbered>
             {
                 instruction.map((instr, index)=>{
                     return (
-                        <ListGroup.Item key={index}>
+                        <ListGroup.Item as='li' key={index}>
                             <Row>
                                 {
                                     instr.img && 
@@ -47,7 +47,7 @@ export default function InstructionList({instruction, setInstruction}){
                                 }
                                 <Col>
                                     <Form.Control type='text' className='m-2' placeholder="Instruction Image URL" value={instr.img || ''} onChange={(e)=>{handleInstructionImgChange(e.target.value, index)}} />
-                                    <Form.Control as='textarea' className='m-2' placeholder="Instruction Description" value={instr.description} onChange={(e)=>{handleInstructionDescChange(e.target.value, index)}} />
+                                    <Form.Control rows={5} as='textarea' className='m-2' placeholder="Instruction Description" value={instr.description} onChange={(e)=>{handleInstructionDescChange(e.target.value, index)}} />
                                 </Col>
                                 <Col sm={1}>
                                     <Button variant='danger' className='m-2' onClick={()=>deleteInstructionStepInput(index)}>X</Button>
@@ -58,7 +58,7 @@ export default function InstructionList({instruction, setInstruction}){
                 })
             }
             <ListGroup.Item as='li'>
-                <Button variant='outline-success' onClick={addInstructionStepInput}>Add Instruction</Button>
+                <Button variant='outline-success' onClick={addInstructionStepInput}>Add Instruction Step</Button>
             </ListGroup.Item>
         </ListGroup>
     )

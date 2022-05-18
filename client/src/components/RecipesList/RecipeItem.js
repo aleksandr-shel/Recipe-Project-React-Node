@@ -16,7 +16,7 @@ export function RecipeItem(recipe, index, navigate){
                 <Card.Text style={{height:'7rem', overflow:'auto'}}>
                     {recipe.description}
                 </Card.Text>
-                <Button variant="primary" onClick={()=>selectRecipe(recipe._id)}>More info</Button>
+                <Button variant="primary" onClick={()=>selectRecipe(recipe._id)}>More details</Button>
             </Card.Body>
         </Card>
     )

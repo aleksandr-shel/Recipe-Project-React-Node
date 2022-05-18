@@ -149,10 +149,10 @@ export default function RecipeDetails(){
                                         </Figure.Caption>
                                         <Figure.Caption>
                                             <h3>Instructions</h3>
-                                            <ListGroup numbered>
+                                            <ListGroup as="ol" numbered>
                                                 {recipe?.instruction.length !== 0 ?
                                                 recipe?.instruction.map((step, index)=>(
-                                                    <ListGroup.Item key={index}>
+                                                    <ListGroup.Item as='li' key={index}>
                                                         <Row>
                                                             {
                                                                 step.img &&
