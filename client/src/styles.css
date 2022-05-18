@@ -11,3 +11,7 @@ body{
     on the container's size */
     /* background-size: cover; */
 }
+
+.cropped-img img{
+    max-height: 450px;
+}

@@ -17,7 +17,7 @@ export default function Layout(){
     function logOut(){
         localStorage.removeItem('token')
         loggedInContext.setLoggedIn(false)
-        loggedInContext.setUser({});
+        loggedInContext.setUser(null);
     }
 
     useEffect(()=>{

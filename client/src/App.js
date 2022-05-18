@@ -9,7 +9,7 @@ const socket = io.connect('/');
 
 export default function App(){
   const [loggedIn, setLoggedIn] = useState(false);
-  const [User, setUser] = useState(false);
+  const [User, setUser] = useState(null);
   return (
     <SocketContext.Provider value={{socket}}>
       <LoggedInContext.Provider value={{loggedIn, setLoggedIn, User, setUser}}>

@@ -20,6 +20,7 @@
     "express": "~4.13.1",
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
+    "imgur": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
     "path": "^0.12.7",

@@ -277,6 +277,34 @@ const searchForRecipes = async(req,res)=>{
     })
 }
 
+
+// do not need yet
+const uploadRecipeImage = async(req,res)=>{
+    try{
+        if (!req.files){
+          res.send({
+            status:false,
+            message: 'no file uploaded'
+          });
+        }else {
+          let avatar = req.files.avatar;
+          avatar.mv('./uploads/' + avatar.name);
+    
+          res.send({
+            status: true,
+            message: 'file uploaded',
+            data: {
+              name: avatar.name,
+              mimetype: avatar.mimetype,
+              size: avatar.size
+            }
+          });
+        }
+    }catch(err){
+        res.status(500).send(err);
+    }
+}
+
 module.exports={
     addRecipe,
     updateRecipe,

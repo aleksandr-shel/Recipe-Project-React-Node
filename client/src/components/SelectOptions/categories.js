@@ -24,7 +24,8 @@ const categories = [
     { value: 'Hot', label: 'Hot' },
     { value: 'Cold', label: 'Cold' },
     { value: 'Beverage', label: 'Beverage' },
-    { value: 'Alcohol', label: 'Alcohol' }
+    { value: 'Alcohol', label: 'Alcohol' },
+    { value: 'Appetizer', label: 'Appetizer'}
   ]
 
 export default categories;

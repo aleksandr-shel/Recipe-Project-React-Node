@@ -33,8 +33,8 @@ let recipeModel = mongoose.Schema(
             default: []
         },
         description:{
-            type:String,
-            default: ''
+            type:[String],
+            default: []
         },
         instruction:{
             type: [Schema.Types.Mixed],

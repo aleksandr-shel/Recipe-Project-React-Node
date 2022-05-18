@@ -14,7 +14,7 @@ export default function RecipesPage(){
             {
                 loggedInContext.loggedIn && 
                 <Button as={Link} to='add-recipe-page' variant='outline-dark' className='m-2'>
-                    Add Recipe
+                    Share Recipe
                 </Button>
             }
             <RecipeList/>

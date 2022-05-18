@@ -10,7 +10,6 @@ export default function IngredientList({ingredients, setIngredients}){
             newArr[index] = value;
             return newArr;
         })
-        console.log(ingredients)
     }
 
     function addIngredientInput(){

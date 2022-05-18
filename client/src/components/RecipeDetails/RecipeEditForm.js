@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Form, Col, Row, Image} from 'react-bootstrap';
 import { useState, useEffect } from "react";
-import IngredientsList from './IngredientList';
+import IngredientsListForm from './IngredientListForm';
 import axios from "axios";
-import InstructionList from "./InstructionList";
+import InstructionListForm from "./InstructionListForm";
 import cuisines from "../SelectOptions/cuisines";
 import Select from 'react-select';
 import categories from "../SelectOptions/categories";
@@ -12,7 +12,7 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
     const [recipeName, setRecipeName] = useState('')
     const [imageUrl, setImageUrl] = useState('')
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState([])
     const [timeToCook, setTimeToCook] = useState('')
     const [instruction, setInstruction] = useState([])
     const [author, setAuthor] = useState({})
@@ -85,13 +85,13 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                             <Form.Label as='h3'>
                                 Description:
                             </Form.Label>
-                            <Form.Control rows={10} as='textarea' onChange={(e)=>setDescription(e.target.value)} value={description} placeholder='Description'/>
+                            <Form.Control as='textarea' rows={10} placeholder="Description" value={description.join('\n')} onChange={(e)=>setDescription(e.target.value.split('\n'))} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
                                 Instructions:
                             </Form.Label>
-                            <InstructionList instruction={instruction} setInstruction={setInstruction}/>
+                            <InstructionListForm instruction={instruction} setInstruction={setInstruction}/>
                             {/* <Form.Control rows={10} as='textarea' onChange={(e)=>setInstruction(e.target.value)} value={instruction} placeholder='Instruction'/> */}
                         </Form.Group>
                         <Button variant="primary" type="submit" style={{marginTop:'10px'}}>
@@ -142,7 +142,7 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                             <Form.Label as='h3'>
                                 Ingredients:
                             </Form.Label>
-                            <IngredientsList ingredients={ingredients} setIngredients={setIngredients}/>
+                            <IngredientsListForm ingredients={ingredients} setIngredients={setIngredients}/>
                         </Form.Group>
                     </Col>
                 </Row>

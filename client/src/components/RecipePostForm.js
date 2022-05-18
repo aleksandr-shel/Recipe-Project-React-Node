@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Form, Col, Row, Image } from 'react-bootstrap';
 import { useState, useEffect } from "react";
-import IngredientsList from './RecipeDetails/IngredientList';
+import IngredientsListForm from './RecipeDetails/IngredientListForm';
 import axios from "axios";
-import InstructionList from "./RecipeDetails/InstructionList";
+import InstructionListForm from "./RecipeDetails/InstructionListForm";
 import { useUser} from '../Auth/useUser';
 import { useToken } from "../Auth/useToken";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ export default function RecipePostForm(){
     const user = useUser();
     const [recipeName, setRecipeName] = useState('')
     const [imageUrl, setImageUrl] = useState('')
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState([''])
     const [timeToCook, setTimeToCook] = useState('')
     const [instruction, setInstruction] = useState([])
     const [author, setAuthor] = useState({})
@@ -25,6 +25,7 @@ export default function RecipePostForm(){
     const [category, setCategory] = useState([])
     const [categorySelect, setCategorySelect] = useState([])
 
+    // const [imageFile, setImageFile] = useState(null);
 
     const [token,] = useToken();
     const navigate = useNavigate();
@@ -59,6 +60,16 @@ export default function RecipePostForm(){
         navigate('/')
     }
 
+    function checkFileExtension(e){
+        console.log(e.target.value);
+        console.log(e.target.files[0]);
+
+    }
+
+    function uploadImage(){
+        axios.post('')
+    }
+
     return(
         <>
             <Form onSubmit={handleSubmitEditForm}>
@@ -68,8 +79,12 @@ export default function RecipePostForm(){
                             <Form.Label as='h3'>
                                 Image URL:
                             </Form.Label>
-                            <Form.Control type='url' value={imageUrl} type='text' onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Image URL'/>
-                            <Image alt='no image' src={imageUrl} className='img-fluid' style={{margin:'10px'}}/>
+                            <Form.Control type='url' value={imageUrl} onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Insert Image URL or Upload Image'/>
+                            {/* <Form.Control onChange={checkFileExtension} type='file'/>
+                            <Button style={{display:'block'}} variant='secondary'>Upload Image</Button> */}
+                            <div className='cropped-img'>
+                                <Image alt='no image' src={imageUrl} className='img-fluid' style={{margin:'10px'}}/>
+                            </div>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
@@ -81,13 +96,13 @@ export default function RecipePostForm(){
                             <Form.Label as='h3'>
                                 Description:
                             </Form.Label>
-                            <Form.Control rows={10} as='textarea' onChange={(e)=>setDescription(e.target.value)} value={description} placeholder='Description'/>
+                            <Form.Control as='textarea' rows={10} placeholder="Description" value={description.join('\n')} onChange={(e)=>setDescription(e.target.value.split('\n'))} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label as='h3'>
                                 Instructions:
                             </Form.Label>
-                            <InstructionList instruction={instruction} setInstruction={setInstruction}/>
+                            <InstructionListForm instruction={instruction} setInstruction={setInstruction}/>
                         </Form.Group>
                         <Button variant="primary" type="submit" style={{marginTop:'10px'}}>
                             Share Recipe
@@ -137,7 +152,7 @@ export default function RecipePostForm(){
                             <Form.Label as='h3'>
                                 Ingredients:
                             </Form.Label>
-                            <IngredientsList ingredients={ingredients} setIngredients={setIngredients}/>
+                            <IngredientsListForm ingredients={ingredients} setIngredients={setIngredients}/>
                         </Form.Group>
                     </Col>
                 </Row>

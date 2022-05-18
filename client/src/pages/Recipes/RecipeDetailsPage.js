@@ -139,12 +139,19 @@ export default function RecipeDetails(){
                                             src={recipe?.imageUrl}/>
                                         <Figure.Caption>
                                             <h3>Description</h3>
-                                            {recipe?.description}
+                                            {recipe?.description.map((par, index)=>{
+                                                return (
+                                                    <p key={index}>
+                                                        {par}
+                                                    </p>
+                                                )
+                                            })}
                                         </Figure.Caption>
                                         <Figure.Caption>
                                             <h3>Instructions</h3>
                                             <ListGroup numbered>
-                                                {recipe?.instruction.map((step, index)=>(
+                                                {recipe?.instruction.length !== 0 ?
+                                                recipe?.instruction.map((step, index)=>(
                                                     <ListGroup.Item key={index}>
                                                         <Row>
                                                             {
@@ -158,7 +165,12 @@ export default function RecipeDetails(){
                                                             </Col>
                                                         </Row>
                                                     </ListGroup.Item>
-                                                ))}
+                                                ))
+                                            :
+                                            <div>
+                                                No Instruction Provided
+                                            </div>
+                                            }
                                             </ListGroup>
                                         </Figure.Caption>
                                     </Col>
