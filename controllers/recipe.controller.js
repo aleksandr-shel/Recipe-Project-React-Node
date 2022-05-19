@@ -51,13 +51,21 @@ const addRecipe = async (req,res)=>{
 }
 
 const getRecipes = async (req,res)=>{
+    let pageNumber = req.query.pageNumber || 1;
+    if (pageNumber <=0){
+        pageNumber = 1;
+    }
+    const recipesAmount = req.query.recipesAmount || 20;
+
+    console.log('getting recipes')
+
     Recipe.find((err, recipes)=>{
         if (err){
             res.send(err);
         } else {
             res.send(recipes);
         }
-    })
+    }).skip((pageNumber - 1) * recipesAmount).limit(recipesAmount)
 }
 
 const getRecipe =async (req,res)=>{
