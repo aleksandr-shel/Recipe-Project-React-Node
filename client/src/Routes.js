@@ -10,18 +10,21 @@ import { useLoggedInContext } from "./Context/LoggedInContext";
 import AccountInfo from "./pages/AcountInfo";
 import RecipeDetails from "./pages/Recipes/RecipeDetailsPage";
 import NotFound from "./pages/NotFound";
+import { useSelector } from "react-redux";
+import { usersSelector } from "./slice/usersReducer";
 // import { useLocation } from "react-router-dom";
 
 export default function Routing(){
 
     const loggedInContext = useLoggedInContext()
     // const location = useLocation();
+    const {user} = useSelector(usersSelector)
 
     return (
             <Routes>
-                <Route path="/" element={<Layout/>}>
-                    <Route path="add-recipe-page" element={loggedInContext.loggedIn ? <AddRecipePage/> : <Login link="/add-recipe-page"/>}/>
-                    <Route index element={<RecipesPage/>}/>
+                <Route exact path="/" element={<Layout/>}>
+                    <Route path="add-recipe-page" element={user !== null ? <AddRecipePage/> : <Login link="/add-recipe-page"/>}/>
+                    <Route exact index element={<RecipesPage/>}/>
                     <Route path="login" element={<Login/>}/>
                     <Route path='register' element={<Register/>}/>
                     <Route path='account-info' element={<AccountInfo/>}/>

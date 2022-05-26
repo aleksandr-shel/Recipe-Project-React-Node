@@ -5,6 +5,8 @@ import { SocketContext } from './Context/socketContext';
 import { useUser } from './Auth/useUser';
 import io from 'socket.io-client';
 
+
+
 const socket = io.connect('/');
 
 export default function App(){

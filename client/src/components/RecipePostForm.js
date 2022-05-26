@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import cuisines from "./SelectOptions/cuisines";
 import Select from 'react-select';
 import categories from "./SelectOptions/categories";
+import { useDispatch } from 'react-redux';
+import { addRecipeApi } from "../slice/recipesReducer";
 
 export default function RecipePostForm(){
 
@@ -25,9 +27,8 @@ export default function RecipePostForm(){
     const [category, setCategory] = useState([])
     const [categorySelect, setCategorySelect] = useState([])
 
-    // const [imageFile, setImageFile] = useState(null);
+    const dispatch = useDispatch();
 
-    const [token,] = useToken();
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -37,38 +38,28 @@ export default function RecipePostForm(){
     function handleSubmitEditForm(e){
         e.preventDefault();
 
-        axios.post(`/api/recipes`,{
-            recipeName,
-            imageUrl,
-            description,
-            timeToCook,
-            instruction,
-            ingredients,
-            author,
-            cuisine,
-            category
-        },{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        }).then(response=>{
+        try{
+            dispatch(addRecipeApi({
+                recipeName,
+                imageUrl,
+                description,
+                timeToCook,
+                instruction,
+                ingredients,
+                author,
+                cuisine,
+                category
+            }))
             navigate('/')
-        })
+        }catch (error){
+            console.log(error);
+        }
     }
 
     function closeButton(){
         navigate('/')
     }
 
-    function checkFileExtension(e){
-        console.log(e.target.value);
-        console.log(e.target.files[0]);
-
-    }
-
-    function uploadImage(){
-        axios.post('')
-    }
 
     return(
         <>
@@ -79,7 +70,7 @@ export default function RecipePostForm(){
                             <Form.Label as='h3'>
                                 Image URL:
                             </Form.Label>
-                            <Form.Control type='url' value={imageUrl} onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Insert Image URL or Upload Image'/>
+                            <Form.Control type='text' value={imageUrl} onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Insert Image URL or Upload Image'/>
                             {/* <Form.Control onChange={checkFileExtension} type='file'/>
                             <Button style={{display:'block'}} variant='secondary'>Upload Image</Button> */}
                             <div className='cropped-img'>

@@ -7,6 +7,7 @@ import InstructionListForm from "./InstructionListForm";
 import cuisines from "../SelectOptions/cuisines";
 import Select from 'react-select';
 import categories from "../SelectOptions/categories";
+import agent from "../../Api/agent";
 
 export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
@@ -39,7 +40,8 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
 
     function handleSubmitEditForm(e){
         e.preventDefault();
-        axios.put(`/api/recipes/${recipe._id}`,{
+
+        agent.Recipes.update({id: recipe._id, recipe: {
             recipeName,
             imageUrl,
             description,
@@ -49,14 +51,26 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
             author,
             cuisine,
             category
-        },{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        }).then(response=>{
-            setRecipe(response.data)
-            setEditMode(false);
-        })
+        }})
+
+        // axios.put(`/api/recipes/${recipe._id}`,{
+        //     recipeName,
+        //     imageUrl,
+        //     description,
+        //     timeToCook,
+        //     instruction,
+        //     ingredients,
+        //     author,
+        //     cuisine,
+        //     category
+        // },{
+        //     headers:{
+        //         Authorization: `Bearer ${token}`
+        //     }
+        // }).then(response=>{
+        //     setRecipe(response.data)
+        //     setEditMode(false);
+        // })
     }
 
     function closeEditMode(){

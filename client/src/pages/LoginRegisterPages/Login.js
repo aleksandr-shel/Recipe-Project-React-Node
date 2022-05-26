@@ -1,53 +1,38 @@
 import React from "react";
 import { useState } from "react";
-import axios from 'axios';
 import ReactLoading from 'react-loading';
 import {useNavigate} from 'react-router-dom';
-import { useToken } from "../../Auth/useToken";
-import { useEffect } from "react";
 import styled from 'styled-components';
-import { useLoggedInContext } from "../../Context/LoggedInContext";
-import getPayloadFromToken from './../../Auth/GetPayloadFromToken';
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, usersSelector,setTokenAndUser } from "../../slice/usersReducer";
+import agent from "../../Api/agent";
 
 export default function Login({link}){
 
-    const [, setToken] = useToken();
-
-    const loggedInContext = useLoggedInContext()
-
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-    const [isLoadingLogin, setLoadingLogin] = useState(false);
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
     
+    const {loading} = useSelector(usersSelector);
+
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        setTimeout(() => {
-            setShowErrorMessage(false);
-        }, 5000);
-    }, [showErrorMessage])
 
     async function onLogin(){
-        setLoadingLogin(true);
-
-        const result = await axios.post('/api/users/login',{
-            email: emailValue,
-            password: passwordValue
-        }).catch(err=>{
-            setLoadingLogin(false);
-            setShowErrorMessage(true);
-            return;
-        })
-        const {token} = result.data;
-        setToken(token);
-        setLoadingLogin(false);
-        loggedInContext.setLoggedIn(true);
-        loggedInContext.setUser(getPayloadFromToken(token));
-        if (link){
-            navigate(link)
-        } else {
-            navigate('/')
+        dispatch(setLoading(true))
+        try{
+            const {token} = await agent.User.login({email:emailValue, password: passwordValue})
+            dispatch(setTokenAndUser(token))
+            dispatch(setLoading(false))
+            if (link){
+                navigate(link)
+            } else {
+                navigate('/')
+            }
+        }catch(error){
+            dispatch(setLoading(false))
+            throw error
         }
     }
 
@@ -115,8 +100,7 @@ export default function Login({link}){
                             </tr>
                         </tbody>
                     </table>
-                <div style={{display:'flex', justifyContent:'center'}}>{showErrorMessage && <span style={{color:'red'}}>Login failed</span>}</div>
-                <div style={{display:'flex', justifyContent:'center'}}>{isLoadingLogin && <ReactLoading type="spinningBubbles" height={'50%'} color="#3cab54"/>}</div>
+                <div style={{display:'flex', justifyContent:'center'}}>{loading && <ReactLoading type="spinningBubbles" height={'50%'} color="#3cab54"/>}</div>
             </div>
         </LoginForm>
     )

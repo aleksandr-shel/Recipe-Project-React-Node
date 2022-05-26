@@ -1,18 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import styled from 'styled-components';
 import { RecipeItem } from "./RecipeItem";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecipes } from "./../../slice/recipesSlice";
-import { recipesSelector } from './../../slice/recipesSlice';
+import { fetchRecipes, addNextPageToLoad } from "../../slice/recipesReducer";
+import { recipesSelector } from '../../slice/recipesReducer';
 import { Button } from "react-bootstrap";
 
 export default function RecipeList(){
     const navigate = useNavigate();
-    const [pageToDownload, setPageToDownload] = useState(2);
-    const {recipes} = useSelector(recipesSelector)
+    const {recipes, nextPageToLoad} = useSelector(recipesSelector)
     const dispatch = useDispatch();
+
     useEffect(()=>{
         if (recipes.length === 0){
             dispatch(fetchRecipes());
@@ -20,8 +20,8 @@ export default function RecipeList(){
     },[dispatch]);
 
     function handleClickMoreButton(){
-        setPageToDownload(pageToDownload=>pageToDownload+1)
-        dispatch(fetchRecipes(pageToDownload, 20))
+        dispatch(fetchRecipes(nextPageToLoad, 4))
+        dispatch(addNextPageToLoad())
     }
 
 

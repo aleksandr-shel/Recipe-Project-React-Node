@@ -1,34 +1,25 @@
 import React from "react";
-import {useEffect, useState } from "react";
+import {useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import { useToken } from '../../Auth/useToken';
-import axios from "axios";
 import styled from "styled-components";
-import { useLoggedInContext } from "../../Context/LoggedInContext";
-import getPayloadFromToken from './../../Auth/GetPayloadFromToken';
-
+import { useDispatch, useSelector } from "react-redux";
+import { usersSelector, setLoading, setTokenAndUser } from "../../slice/usersReducer";
+import agent from "../../Api/agent";
 
 export default function Register(){
 
-    const [, setToken] = useToken();
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
-    const [isLoadingRegister, setLoadingRegister] = useState(false);
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const {loading} = useSelector(usersSelector);
 
-    const loggedInContext = useLoggedInContext()
+    const dispatch = useDispatch()
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        setTimeout(() => {
-            setShowErrorMessage(false);
-        }, 5000);
-    }, [showErrorMessage])
 
     function clearInputs(){
         setEmailValue('')
@@ -37,26 +28,23 @@ export default function Register(){
         setLastName('')
     }
     async function onRegisterClicked(){
-        setLoadingRegister(true);
-        const response = await axios.post('/api/users/register',{
-            email: emailValue,
-            password: passwordValue,
-            firstName,
-            lastName
-        })
-        .catch(err=>{
-            setLoadingRegister(false);
-            setShowErrorMessage(true);
-            return;
-        })
-
-        console.log(response);
-        const {token} = response.data;
-        setToken(token);
-        setLoadingRegister(false);
-        loggedInContext.setLoggedIn(true);
-        loggedInContext.setUser(getPayloadFromToken(token));
-        navigate('/')
+        dispatch(setLoading(true))
+        try{
+            const {token} = await agent.User
+                .register({
+                    email: emailValue,
+                    password: passwordValue,
+                    firstName,
+                    lastName
+                })
+            dispatch(setTokenAndUser(token))
+            dispatch(setLoading(false))
+            navigate('/')
+            
+        }catch(error){
+            dispatch(setLoading(false))
+            throw error
+        }
     }
     return (
         <RegisterForm>
@@ -135,8 +123,7 @@ export default function Register(){
                         </tr>
                     </tbody>
                 </table>
-                <div style={{display:'flex', justifyContent:'center'}}>{showErrorMessage && <span style={{color:'red'}}>Registration failed</span>}</div>
-                <div style={{display:'flex', justifyContent:'center'}}>{isLoadingRegister && <ReactLoading type="spinningBubbles" height={'50%'} color="#3cab54"/>}</div>
+                <div style={{display:'flex', justifyContent:'center'}}>{loading && <ReactLoading type="spinningBubbles" height={'50%'} color="#3cab54"/>}</div>
             </div>
         </RegisterForm>
     )

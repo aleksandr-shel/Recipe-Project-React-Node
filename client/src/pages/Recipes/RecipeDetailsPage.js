@@ -4,20 +4,21 @@ import {ListGroup, Breadcrumb, Col, Container, Row, Figure, Button, Form, CloseB
 import axios from 'axios';
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "../../Auth/useUser";
 import { RecipeDeleteForm, RecipeEditForm } from "../../components";
 import { useToken } from "../../Auth/useToken";
 import { useSocketContext } from "../../Context/socketContext";
-import {useLoggedInContext } from '../../Context/LoggedInContext';
+import { usersSelector } from "../../slice/usersReducer";
+import { useSelector } from "react-redux";
 
 export default function RecipeDetails(){
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState()
-    const user = useUser();
+    // const user = useUser();
     const [token,] = useToken();
     const navigate = useNavigate();
 
-    const loggedInContext = useLoggedInContext()
+    const {user} = useSelector(usersSelector);
+
 
     const [editMode, setEditMode] = useState(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState(false);
@@ -116,7 +117,7 @@ export default function RecipeDetails(){
       );
 
     return (
-        <Container style={{marginBottom:'5%'}} style={{width:'80vw'}}>
+        <Container style={{marginBottom:'5%'}}>
             <Breadcrumb>
                 <Breadcrumb.Item onClick={()=>{socket.emit('leave-recipe-page', {recipeId})}} linkAs={Link} linkProps={{to:'/'}}>Recipes List</Breadcrumb.Item>
                 <Breadcrumb.Item active>Recipe Details Page</Breadcrumb.Item>
@@ -176,7 +177,7 @@ export default function RecipeDetails(){
                                     </Col>
                                     <Col md={4}>
                                         {
-                                            loggedInContext.User?.id === recipe.author.id &&
+                                            user?.id === recipe.author.id &&
                                             <div>
                                                 <Button variant="outline-primary" onClick={handleEditButton}>Edit</Button>{' '}
                                                 <Button variant="outline-danger" onClick={handleDeleteButton}>Delete</Button>
@@ -213,7 +214,7 @@ export default function RecipeDetails(){
                     <Col md={3}>
                         <h3>Comments</h3>
                         {
-                            loggedInContext.loggedIn &&
+                            user !== null &&
                             <Form onSubmit={e=>addComment(e)}>
                                 <Form.Group style={{padding:'6px'}}>
                                     <Form.Control placeholder='Leave a comment' required value={comment} onChange={e=>setComment(e.target.value)}/>
