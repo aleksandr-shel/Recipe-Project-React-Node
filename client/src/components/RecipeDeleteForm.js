@@ -3,18 +3,23 @@ import {Button, Form} from 'react-bootstrap';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { deleteRecipeApi } from '../slice/recipesReducer';
 
 export default function RecipeDeleteForm({toShow, setToShow, recipeId, token}){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     function handleDelete(){
-        axios.delete(`/api/recipes/${recipeId}`,{
-            headers: {Authorization: `Bearer ${token}`}
-        }).then( response =>{
-            if (response.status === 200){
-                navigate('/')
-            }
-        })
+        // axios.delete(`/api/recipes/${recipeId}`,{
+        //     headers: {Authorization: `Bearer ${token}`}
+        // }).then( response =>{
+        //     if (response.status === 200){
+        //         navigate('/')
+        //     }
+        // })
+        dispatch(deleteRecipeApi(recipeId));
+        navigate('/');
     }
 
     function handleCancel(){

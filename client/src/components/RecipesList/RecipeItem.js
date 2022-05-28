@@ -1,11 +1,17 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { selectRecipe } from "../../slice/recipesReducer";
+
 export function RecipeItem(recipe, index, navigate){
 
+    const dispatch = useDispatch();
 
-    function selectRecipe(id){
-        window.scrollTo(0, 0)
-        navigate(`/recipes/${id}`)
+
+    function moveToRecipeDetails(){
+        window.scrollTo(0, 0);
+        dispatch(selectRecipe(recipe))
+        navigate(`/recipes/${recipe._id}`)
     }
 
     return(
@@ -16,7 +22,7 @@ export function RecipeItem(recipe, index, navigate){
                 <Card.Text style={{height:'7rem', overflow:'auto'}}>
                     {recipe.description}
                 </Card.Text>
-                <Button variant="primary" onClick={()=>selectRecipe(recipe._id)}>More details</Button>
+                <Button variant="primary" onClick={()=>moveToRecipeDetails()}>More details</Button>
             </Card.Body>
         </Card>
     )

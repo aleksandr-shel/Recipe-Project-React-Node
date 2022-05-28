@@ -57,8 +57,6 @@ const getRecipes = async (req,res)=>{
     }
     const recipesAmount = req.query.recipesAmount || 20;
 
-    console.log('getting recipes')
-
     Recipe.find((err, recipes)=>{
         if (err){
             res.send(err);
@@ -69,7 +67,6 @@ const getRecipes = async (req,res)=>{
 }
 
 const getRecipe =async (req,res)=>{
-    
     const {recipeId} = req.params;
 
     Recipe.findById(recipeId, (err, result)=>{

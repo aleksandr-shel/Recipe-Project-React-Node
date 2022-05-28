@@ -5,20 +5,20 @@ import axios from 'axios';
 import {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RecipeDeleteForm, RecipeEditForm } from "../../components";
-import { useToken } from "../../Auth/useToken";
 import { useSocketContext } from "../../Context/socketContext";
 import { usersSelector } from "../../slice/usersReducer";
 import { useSelector } from "react-redux";
+import { recipesSelector } from "../../slice/recipesReducer";
+import { loadRecipe } from "../../slice/recipesReducer";
+import { useDispatch } from "react-redux";
 
 export default function RecipeDetails(){
     const {recipeId} = useParams();
-    const [recipe, setRecipe] = useState()
-    // const user = useUser();
-    const [token,] = useToken();
     const navigate = useNavigate();
 
-    const {user} = useSelector(usersSelector);
-
+    const {selectedRecipe: recipe} = useSelector(recipesSelector);
+    const {user, token} = useSelector(usersSelector);
+    const dispatch = useDispatch();
 
     const [editMode, setEditMode] = useState(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState(false);
@@ -38,18 +38,15 @@ export default function RecipeDetails(){
     }
 
     useEffect(()=>{
-        function loadRecipe(){
-            axios.get(`/api/recipes/${recipeId}`)
-            .then(response=>{
-                setRecipe(response.data);
-                setComments(response.data.comments.reverse());
-            }).catch(error=>{
-                console.log(error);
-            })
+        if (recipe){
+            setComments(recipe.comments.reverse());
+        } else if (recipeId) {
+            dispatch(loadRecipe(recipeId))
+        } else {
+            console.log('something wrong')
         }
-        loadRecipe()
         socket.emit('join-recipe-page', {recipeId})
-    },[recipeId, socket])
+    },[recipeId, socket, dispatch, recipe])
 
     useEffect(()=>{
         socket.on('comment-added',(comment)=>{
@@ -252,7 +249,7 @@ export default function RecipeDetails(){
             }
             {
                 recipe && editMode &&
-                <RecipeEditForm setEditMode={setEditMode} recipe={recipe} setRecipe={setRecipe} token={token}/>
+                <RecipeEditForm setEditMode={setEditMode} recipe={recipe}/>
             }
             {
                 recipe &&

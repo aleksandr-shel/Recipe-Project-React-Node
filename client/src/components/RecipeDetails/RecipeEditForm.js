@@ -2,14 +2,14 @@ import React from "react";
 import { Button, Form, Col, Row, Image} from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import IngredientsListForm from './IngredientListForm';
-import axios from "axios";
 import InstructionListForm from "./InstructionListForm";
 import cuisines from "../SelectOptions/cuisines";
 import Select from 'react-select';
 import categories from "../SelectOptions/categories";
-import agent from "../../Api/agent";
+import { useDispatch } from 'react-redux';
+import { updateRecipeApi } from "./../../slice/recipesReducer";
 
-export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
+export default function RecipeEditForm({recipe, setEditMode}){
 
     const [recipeName, setRecipeName] = useState('')
     const [imageUrl, setImageUrl] = useState('')
@@ -21,6 +21,9 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
     const [cuisine, setCuisine] = useState('')
     const [category, setCategory] = useState([])
     const [categorySelect, setCategorySelect] = useState([])
+
+    const dispatch = useDispatch();
+    
 
     useEffect(()=>{
         setRecipeName(recipe.recipeName)
@@ -38,10 +41,10 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
         setCuisine(recipe.cuisine);
     },[])
 
+
     function handleSubmitEditForm(e){
         e.preventDefault();
-
-        agent.Recipes.update({id: recipe._id, recipe: {
+        const recipeUpdated = {
             recipeName,
             imageUrl,
             description,
@@ -51,26 +54,9 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
             author,
             cuisine,
             category
-        }})
-
-        // axios.put(`/api/recipes/${recipe._id}`,{
-        //     recipeName,
-        //     imageUrl,
-        //     description,
-        //     timeToCook,
-        //     instruction,
-        //     ingredients,
-        //     author,
-        //     cuisine,
-        //     category
-        // },{
-        //     headers:{
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // }).then(response=>{
-        //     setRecipe(response.data)
-        //     setEditMode(false);
-        // })
+        }
+        dispatch(updateRecipeApi(recipe._id, recipeUpdated))
+        closeEditMode();
     }
 
     function closeEditMode(){
@@ -86,7 +72,7 @@ export default function RecipeEditForm({recipe, setEditMode, token, setRecipe}){
                             <Form.Label as='h3'>
                                 Image URL:
                             </Form.Label>
-                            <Form.Control type='url' value={imageUrl} type='text' onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Image URL'/>
+                            <Form.Control type='url' value={imageUrl} onChange={(e)=>{setImageUrl(e.target.value);}} placeholder='Image URL'/>
                             <Image alt='no image' className='img-fluid' src={imageUrl} height={300} style={{margin:'10px'}}/>
                         </Form.Group>
                         <Form.Group>

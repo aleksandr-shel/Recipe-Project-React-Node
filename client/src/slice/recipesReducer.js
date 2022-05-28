@@ -23,10 +23,19 @@ export const recipesSlice = createSlice({
             return state;
         },
         updateRecipe: (state, {payload})=>{
-            
+            const updatedRecipe = payload;
+            state.recipes = state.recipes.map((recipe)=>{
+                console.log(recipe._id)
+                return recipe._id === updatedRecipe._id ? updatedRecipe : recipe;
+            })
+            return state;
         },
         deleteRecipe: (state, {payload})=>{
-
+            const id = payload;
+            state.recipes = state.recipes.filter(recipe=>{
+                return recipe._id !== id;
+            })
+            return state;
         },
         selectRecipe: (state, {payload})=>{
             state.selectedRecipe = payload
@@ -59,7 +68,39 @@ export function addRecipeApi(recipe){
     }
 }
 
-export const {setRecipes, addRecipe, fetchRecipesAnother, addNextPageToLoad} = recipesSlice.actions;
+export function updateRecipeApi(id, recipe){
+    return async (dispatch)=>{
+        agent.Recipes.update(id, recipe).then(recipe=>{
+            dispatch(updateRecipe(recipe))
+            dispatch(selectRecipe(recipe))
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export function deleteRecipeApi(id){
+    return async (dispatch)=>{
+        agent.Recipes.delete(id).then((res)=>{
+            dispatch(deleteRecipe(id))
+            dispatch(selectRecipe(null))
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export function loadRecipe(id){
+    return async(dispatch)=>{
+        agent.Recipes.details(id).then(recipe=>{
+            dispatch(selectRecipe(recipe));
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export const {setRecipes, addRecipe, fetchRecipesAnother, addNextPageToLoad, updateRecipe, deleteRecipe, selectRecipe} = recipesSlice.actions;
 
 export const recipesSelector = (state) => state.recipes
 
