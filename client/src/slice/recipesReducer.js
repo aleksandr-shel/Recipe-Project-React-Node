@@ -4,6 +4,7 @@ import agent from "../Api/agent";
 const initialState = {
     recipes: [],
     nextPageToLoad: 2,
+    favorites: [],
     selectedRecipe: null
 }
 
@@ -40,13 +41,27 @@ export const recipesSlice = createSlice({
         selectRecipe: (state, {payload})=>{
             state.selectedRecipe = payload
             return state;
+        },
+        setFavorites: (state, {payload})=>{
+            state.favorites = payload
+            return state;
+        },
+        addFavorite: (state, {payload})=>{
+            state.favorites.push(payload);
+        },
+        removeFavorite: (state, {payload})=>{
+            const id = payload;
+            state.favorites = state.favorites.filter(recipe=>{
+                return recipe._id !== id;
+            })
+            return state;
         }
     }
 })
 //actions
 
 //fetch all recipes
-export function fetchRecipes(pageNumber=1,recipesAmount = 4){
+export function fetchRecipes(pageNumber=1,recipesAmount = 10){
     return async (dispatch)=>{
         agent.Recipes.list(pageNumber, recipesAmount).then(recipes =>{
             dispatch(setRecipes(recipes))
@@ -56,7 +71,6 @@ export function fetchRecipes(pageNumber=1,recipesAmount = 4){
         })
     }
 }
-
 
 export function addRecipeApi(recipe){
     return async (dispatch)=>{
@@ -100,7 +114,37 @@ export function loadRecipe(id){
     }
 }
 
-export const {setRecipes, addRecipe, fetchRecipesAnother, addNextPageToLoad, updateRecipe, deleteRecipe, selectRecipe} = recipesSlice.actions;
+export function fetchFavorites(ids){
+    return async (dispatch)=>{
+        agent.Recipes.favorites(ids).then(recipes=>{
+            dispatch(setFavorites(recipes))
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export function addFavouriteApi(id, recipe){
+    return async (dispatch)=>{
+        agent.Recipes.addFavorite(id).then(response=>{
+            dispatch(addFavorite(recipe))
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export function removeFavouriteApi(id){
+    return async (dispatch)=>{
+        agent.Recipes.removeFavorite(id).then(response=>{
+            dispatch(removeFavorite(id))
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
+}
+
+export const {setRecipes, addRecipe, fetchRecipesAnother, addNextPageToLoad, updateRecipe, deleteRecipe, selectRecipe, setFavorites, addFavorite, removeFavorite} = recipesSlice.actions;
 
 export const recipesSelector = (state) => state.recipes
 

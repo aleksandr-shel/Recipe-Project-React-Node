@@ -137,7 +137,7 @@ const checkToken = async (req,res)=>{
     return res.status(401).json({message:'no authorization header sent'})
   }
 
-  const token = authorization.splot(' ')[1];
+  const token = authorization.split(' ')[1];
   jwt.verify(token, process.env.JWT_SECRET, async(err, decoded)=>{
     if (err){
       return res.status(401).json({message:'unable to verify token or token has expired'})
@@ -147,11 +147,34 @@ const checkToken = async (req,res)=>{
   })
 }
 
+const getCurrentUser = async (req,res)=>{
+  const {authorization} = req.headers;
+  if (!authorization){
+    return res.status(401).json({message:'no authorization header sent'})
+  }
+
+  const token = authorization.split(' ')[1];
+  jwt.verify(token, process.env.JWT_SECRET, async(err, decoded)=>{
+    if (err){
+      return res.status(401).json({message:'unable to verify token or token has expired'})
+    }
+    const {id} = decoded;
+
+    User.findOne({_id:id}, (err, result)=>{
+      if (err){
+        return res.status(400).send(err);
+      }
+      return res.status(200).send(result);
+    })
+  })
+}
+
 module.exports = {
     getUsers,
     register,
     login,
     deleteUser,
     uploadImage,
-    checkToken
+    checkToken,
+    getCurrentUser
 }

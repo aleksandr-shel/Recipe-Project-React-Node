@@ -36,7 +36,7 @@ let User = Schema(
             default: []
         },
         favoriteRecipes:{
-            type: [String],
+            type: [],
             default: []
         }
     }, {

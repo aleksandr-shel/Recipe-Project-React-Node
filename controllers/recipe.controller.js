@@ -1,6 +1,7 @@
 const Recipe = require('../models/recipe');
 const User = require('../models/user');
-const Comment = require('../models/comment')
+const Comment = require('../models/comment');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
 
@@ -310,6 +311,106 @@ const uploadRecipeImage = async(req,res)=>{
     }
 }
 
+const addFavouriteRecipe = async (req, res) =>{
+    const {authorization} = req.headers;
+
+    if (!authorization){
+        return res.status(401).json({message: 'no authorization header sent'})
+    }
+
+    const token = authorization.split(' ')[1];
+
+    const {recipeId} = req.params;
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded)=>{
+        if (err){
+            return res.status(401).json({message:'Unable to verify token'})
+        }
+
+        const {id} = decoded;
+
+        User.findOneAndUpdate(
+            {_id:id},
+            {$addToSet:{favoriteRecipes:recipeId}},
+            // {$set: {favoriteRecipes: []}},
+            (err)=>{
+                if(err){
+                    return res.status(400).send(err);
+                }
+                return res.status(200).end();
+            }
+        )
+    })
+}
+
+const removeFavouriteRecipe = async (req, res) =>{
+    const {authorization} = req.headers;
+
+    if (!authorization){
+        return res.status(401).json({message: 'no authorization header sent'})
+    }
+
+    const token = authorization.split(' ')[1];
+
+    const {recipeId} = req.params;
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded)=>{
+        if (err){
+            return res.status(401).json({message:'Unable to verify token'})
+        }
+
+        const {id} = decoded;
+
+        User.findOneAndUpdate(
+            {_id:id},
+            {$pull:{favoriteRecipes:recipeId}},
+            // {$set: {favoriteRecipes: []}},
+            (err)=>{
+                if(err){
+                    return res.status(400).send(err);
+                }
+                return res.status(200).end();
+            }
+        )
+    })
+}
+
+const getFavorites = async (req,res)=>{
+    const {authorization} = req.headers;
+    if (!authorization){
+        return res.status(401).json({message:'no authorization header sent'})
+    }
+
+    const token = authorization.split(' ')[1];
+    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded)=>{
+        if (err){
+            return res.status(401).json({message:'unable to verify token or token has expired'})
+        }
+        const {id} = decoded;
+
+        User.findOne({_id:id}, (err, user)=>{
+            if (err){
+                return res.status(400).send(err);
+            }
+            let ids = user.favoriteRecipes
+            ids.map(
+                id =>{
+                    return ObjectId(id);
+                }
+            )
+            Recipe.find(
+                {_id:{$in: ids}},
+                (err, recipes)=>{
+                    if (err){
+                        return res.status(400).send(err);
+                    }
+                    return res.status(200).send(recipes)
+                }
+            )
+        })
+    })
+}
+
 module.exports={
     addRecipe,
     updateRecipe,
@@ -322,5 +423,8 @@ module.exports={
     removeComment,
     giveRating,
     clearComments,
-    searchForRecipes
+    searchForRecipes,
+    addFavouriteRecipe,
+    removeFavouriteRecipe,
+    getFavorites
 }

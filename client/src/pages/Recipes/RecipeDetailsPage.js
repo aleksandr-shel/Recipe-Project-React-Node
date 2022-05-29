@@ -8,15 +8,17 @@ import { RecipeDeleteForm, RecipeEditForm } from "../../components";
 import { useSocketContext } from "../../Context/socketContext";
 import { usersSelector } from "../../slice/usersReducer";
 import { useSelector } from "react-redux";
-import { recipesSelector } from "../../slice/recipesReducer";
+import { addFavouriteApi, recipesSelector, removeFavouriteApi } from "../../slice/recipesReducer";
 import { loadRecipe } from "../../slice/recipesReducer";
 import { useDispatch } from "react-redux";
+import {FcLike, FcLikePlaceholder} from 'react-icons/fc';
+import { fetchFavorites } from "../../slice/recipesReducer";
 
 export default function RecipeDetails(){
     const {recipeId} = useParams();
     const navigate = useNavigate();
 
-    const {selectedRecipe: recipe} = useSelector(recipesSelector);
+    const {selectedRecipe: recipe, favorites} = useSelector(recipesSelector);
     const {user, token} = useSelector(usersSelector);
     const dispatch = useDispatch();
 
@@ -37,7 +39,22 @@ export default function RecipeDetails(){
         setShowDeleteWindow(true);
     }
 
+    function isFavorite(){
+        return favorites.some(rec =>{
+            return rec._id === recipeId
+        })
+    }
+
+    function addFavorite(){
+        dispatch(addFavouriteApi(recipeId, recipe))
+    }
+
+    function removeFavorite(){
+        dispatch(removeFavouriteApi(recipeId))
+    }
+
     useEffect(()=>{
+        console.log(user);
         if (recipe){
             setComments(recipe.comments.reverse());
         } else if (recipeId) {
@@ -45,8 +62,11 @@ export default function RecipeDetails(){
         } else {
             console.log('something wrong')
         }
+        if (user){
+            dispatch(fetchFavorites());
+        }
         socket.emit('join-recipe-page', {recipeId})
-    },[recipeId, socket, dispatch, recipe])
+    },[recipeId, socket, dispatch, recipe, user])
 
     useEffect(()=>{
         socket.on('comment-added',(comment)=>{
@@ -193,6 +213,13 @@ export default function RecipeDetails(){
                                             <div className='d-flex flex-wrap'>
                                                 {recipe?.category.map((cat,index)=><div className='p-2 border border-secondary' key={index}>{cat}</div>)}
                                             </div>
+                                        </Figure.Caption>
+                                        <Figure.Caption>
+                                            {isFavorite() ?
+                                            <FcLike size={50} onClick={removeFavorite}/>
+                                            :
+                                            <FcLikePlaceholder size={50} onClick={addFavorite}/>    
+                                            }
                                         </Figure.Caption>
                                         <Figure.Caption>
                                             <h3>Ingredients</h3>

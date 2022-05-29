@@ -14,9 +14,7 @@ export default function App(){
   const [User, setUser] = useState(null);
   return (
     <SocketContext.Provider value={{socket}}>
-      <LoggedInContext.Provider value={{loggedIn, setLoggedIn, User, setUser}}>
         <Routing/>
-      </LoggedInContext.Provider>
     </SocketContext.Provider>
   )
 }

@@ -1,36 +1,34 @@
 import React from "react";
 import { useEffect } from "react";
 import styled from 'styled-components';
-import { RecipeItem } from "./RecipeItem";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecipes, addNextPageToLoad } from "../../slice/recipesReducer";
+import { fetchFavorites } from "../../slice/recipesReducer";
 import { recipesSelector } from '../../slice/recipesReducer';
-import { Button } from "react-bootstrap";
+import { RecipeItem } from './../../components/RecipesList/RecipeItem';
+import { usersSelector } from "../../slice/usersReducer";
 
-export default function RecipeList(){
+export default function FavoritesList(){
     const navigate = useNavigate();
-    const {recipes, nextPageToLoad} = useSelector(recipesSelector)
+    const {favorites} = useSelector(recipesSelector)
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-        if (recipes.length === 0){
-            dispatch(fetchRecipes());
-        }
-    },[dispatch]);
+    const {user} = useSelector(usersSelector);
 
-    function handleClickMoreButton(){
-        dispatch(fetchRecipes(nextPageToLoad, 10))
-        dispatch(addNextPageToLoad())
-    }
+    useEffect(()=>{
+        if (user && favorites.length === 0){
+            dispatch(fetchFavorites());
+        }
+    },[dispatch, favorites.length, user]);
+
 
 
     return(
         <>
+            <h2>Favorites</h2>
             <RecipeListDiv>
-                {recipes?.map((recipe, index) => RecipeItem(recipe, index, navigate))}
+                {favorites?.map((recipe, index) => RecipeItem(recipe, index, navigate))}
             </RecipeListDiv>
-            <Button onClick={handleClickMoreButton} variant='light' className='mx-auto w-100'>More</Button>
         </>
     )
 }

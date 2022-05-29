@@ -6,17 +6,14 @@ import RecipesPage from './pages/Recipes/RecipesPage';
 import Login from './pages/LoginRegisterPages/Login';
 import Register from './pages/LoginRegisterPages/Register';
 import AddRecipePage from "./pages/Recipes/AddRecipePage";
-import { useLoggedInContext } from "./Context/LoggedInContext";
 import AccountInfo from "./pages/AcountInfo";
 import RecipeDetails from "./pages/Recipes/RecipeDetailsPage";
 import NotFound from "./pages/NotFound";
 import { useSelector } from "react-redux";
 import { usersSelector } from "./slice/usersReducer";
-// import { useLocation } from "react-router-dom";
+import FavoritesList from './pages/Recipes/FavoritesPage';
 
 export default function Routing(){
-
-    const loggedInContext = useLoggedInContext()
     // const location = useLocation();
     const {user} = useSelector(usersSelector)
 
@@ -28,6 +25,7 @@ export default function Routing(){
                     <Route path="login" element={<Login/>}/>
                     <Route path='register' element={<Register/>}/>
                     <Route path='account-info' element={<AccountInfo/>}/>
+                    <Route path='favorites' element={<FavoritesList/>}/>
                     <Route exact path='recipes/:recipeId' element={<RecipeDetails/>}/>
                     <Route path='testpage' element={<Test/>}/>
                     <Route path='test-reducer-example' element={<Todos/>}/>

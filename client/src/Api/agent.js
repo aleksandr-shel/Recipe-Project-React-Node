@@ -46,11 +46,15 @@ const Recipes = {
     create: (recipe)=> requests.post('/api/recipes', recipe),
     update: (id, recipe)=> requests.put(`/api/recipes/${id}`, recipe),
     delete: (id)=> requests.delete(`/api/recipes/${id}`),
+    favorites: (ids)=> requests.get('/api/recipes/favourites'),
+    addFavorite: (id)=> requests.post(`/api/recipes/${id}/add-favorite`),
+    removeFavorite: (id)=> requests.delete(`/api/recipes/${id}/remove-favorite`)
 }
 
 const User = {
     login: (user)=> requests.post('/api/users/login', user),
-    register: (user)=> requests.post('/api/users/register', user)
+    register: (user)=> requests.post('/api/users/register', user),
+    getCurrent: ()=> requests.get('/api/users/current')
 }
 
 

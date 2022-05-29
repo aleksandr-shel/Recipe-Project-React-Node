@@ -4,7 +4,7 @@ import ReactLoading from 'react-loading';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, usersSelector,setTokenAndUser } from "../../slice/usersReducer";
+import { setLoading, usersSelector,setToken, loadCurrentUser } from "../../slice/usersReducer";
 import agent from "../../Api/agent";
 
 export default function Login({link}){
@@ -23,7 +23,8 @@ export default function Login({link}){
         dispatch(setLoading(true))
         try{
             const {token} = await agent.User.login({email:emailValue, password: passwordValue})
-            dispatch(setTokenAndUser(token))
+            dispatch(setToken(token))
+            dispatch(loadCurrentUser())
             dispatch(setLoading(false))
             if (link){
                 navigate(link)

@@ -17,4 +17,6 @@ router.post('/upload-avatar', userCtrl.uploadImage)
 
 router.post('/checkToken', userCtrl.checkToken)
 
+router.get('/current', userCtrl.getCurrentUser)
+
 module.exports = router;

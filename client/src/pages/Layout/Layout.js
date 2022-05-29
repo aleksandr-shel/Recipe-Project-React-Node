@@ -7,19 +7,18 @@ import styled from 'styled-components';
 import RecipesLogo from './Recipes.png'
 import { RecipeSearchList } from '../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { usersSelector, setTokenAndUser, removeTokenAndUser } from './../../slice/usersReducer';
+import { usersSelector, setTokenAndUser, removeTokenAndUser, loadCurrentUser, setToken } from './../../slice/usersReducer';
 import {GiHamburgerMenu, GiCook} from 'react-icons/gi'
 import { useState } from 'react';
 import {GrFavorite} from 'react-icons/gr';
 import {AiOutlineInfoCircle} from 'react-icons/ai';
-
 
 export default function Layout(){
 
     const dispatch = useDispatch();
     const {user} = useSelector(usersSelector);
 
-    const [isExpanded, setExpanded] = useState(true);
+    const [isExpanded, setExpanded] = useState(false);
 
     function logOut(){
         dispatch(removeTokenAndUser())
@@ -28,7 +27,8 @@ export default function Layout(){
     useEffect(()=>{
         const token = window.localStorage.getItem('token');
         if (token){
-            dispatch(setTokenAndUser(token))
+            dispatch(setToken(token))
+            dispatch(loadCurrentUser())
         }
     },[dispatch])
 
@@ -64,8 +64,8 @@ export default function Layout(){
                             <NavDropdown style={{marginRight:'5%'}} title={<><AiOutlineUser/><span> </span>{user?.email}</>} id="navbarScrollingDropdown">
                                     {user != null ? 
                                         <>
-                                            <NavDropdown.Item as={Link} to='/account-info'>Account Info</NavDropdown.Item>
-                                            <NavDropdown.Divider />
+                                            {/* <NavDropdown.Item as={Link} to='/account-info'>Account Info</NavDropdown.Item>
+                                            <NavDropdown.Divider /> */}
                                             <NavDropdown.Item onClick={logOut}>Log out</NavDropdown.Item>
                                         </>
                                         :
@@ -80,21 +80,21 @@ export default function Layout(){
                 </Navbar>
                 <div style={{width: isExpanded ? '150px': '50px'}} className='sideBarMenu'>
                     <ListGroup>
-                        <ListGroup.Item as={Link} to='#'>
+                        <ListGroup.Item as={Link} to='favorites'>
                             <GrFavorite/>
                             {isExpanded &&
                             ' Favorites'}
                         </ListGroup.Item>
-                        <ListGroup.Item as={Link} to='#'>
+                        {/* <ListGroup.Item as={Link} to='#'>
                             <GiCook/>
                             {isExpanded &&
                             ' My Recipes'}
-                        </ListGroup.Item>
-                        <ListGroup.Item as={Link} to='#'>
+                        </ListGroup.Item> */}
+                        {/* <ListGroup.Item as={Link} to='#'>
                             <AiOutlineInfoCircle/>
                             {isExpanded &&
                             ' About'}
-                        </ListGroup.Item>
+                        </ListGroup.Item> */}
                         
                     </ListGroup>
                 </div>

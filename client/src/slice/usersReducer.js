@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import getPayloadFromToken from '../Auth/GetPayloadFromToken';
+import agent from '../Api/agent';
 
 const initialState = {
     user: null,
@@ -32,18 +32,19 @@ export const usersSlice = createSlice({
     }
 }) 
 
-export function setTokenAndUser(token) {
-    return async (dispatch)=>{
-        dispatch(setToken(token))
-        const userFromToken = getPayloadFromToken(token);
-        dispatch(setUser(userFromToken));
-    }
-}
 
 export function removeTokenAndUser(){
     return async (dispatch)=>{
         dispatch(removeToken());
         dispatch(setUser(null));
+    }
+}
+
+export function loadCurrentUser(){
+    return async (dispatch)=>{
+        agent.User.getCurrent().then(user=>{
+            dispatch(setUser(user));
+        })
     }
 }
 

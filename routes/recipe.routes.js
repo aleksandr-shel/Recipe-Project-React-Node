@@ -5,6 +5,8 @@ const recipeCtrl = require('../controllers/recipe.controller');
 
 router.get('/', recipeCtrl.getRecipes);
 
+router.get('/favourites', recipeCtrl.getFavorites)
+
 router.get('/:recipeId', recipeCtrl.getRecipe);
 
 router.post('/', recipeCtrl.addRecipe);
@@ -24,5 +26,10 @@ router.delete('/:recipeId/comments', recipeCtrl.removeComment)
 router.put('/:recipeId/comments/clear', recipeCtrl.clearComments)
 
 router.post('/search', recipeCtrl.searchForRecipes)
+
+router.post('/:recipeId/add-favorite', recipeCtrl.addFavouriteRecipe)
+
+router.delete('/:recipeId/remove-favorite', recipeCtrl.removeFavouriteRecipe)
+
 
 module.exports = router;

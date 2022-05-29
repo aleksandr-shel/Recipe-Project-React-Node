@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector, setLoading, setTokenAndUser } from "../../slice/usersReducer";
+import { usersSelector, setLoading, setTokenAndUser, setToken, loadCurrentUser } from "../../slice/usersReducer";
 import agent from "../../Api/agent";
 
 export default function Register(){
@@ -37,7 +37,8 @@ export default function Register(){
                     firstName,
                     lastName
                 })
-            dispatch(setTokenAndUser(token))
+            dispatch(setToken(token))
+            dispatch(loadCurrentUser())
             dispatch(setLoading(false))
             navigate('/')
             
