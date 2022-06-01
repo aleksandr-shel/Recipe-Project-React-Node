@@ -55,6 +55,8 @@ export default function RecipeDetails(){
 
     useEffect(()=>{
         console.log(user);
+        console.log(recipe.author.id);
+        console.log(recipe);
         if (recipe){
             setComments(recipe.comments.reverse());
         } else if (recipeId) {
@@ -194,7 +196,7 @@ export default function RecipeDetails(){
                                     </Col>
                                     <Col md={4}>
                                         {
-                                            user?.id === recipe.author.id &&
+                                            user?._id == recipe.author.id &&
                                             <div>
                                                 <Button variant="outline-primary" onClick={handleEditButton}>Edit</Button>{' '}
                                                 <Button variant="outline-danger" onClick={handleDeleteButton}>Delete</Button>

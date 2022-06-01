@@ -41,9 +41,11 @@ export default function Layout(){
             <div className='allnavbar'>
                 <Navbar bg="light" expand='lg'>
                     <Container fluid>
-                        <Navbar.Brand>
-                            <GiHamburgerMenu className='hamburger' onClick={toggleSideBarMenu} size={25}/>
-                        </Navbar.Brand>
+                        {user &&
+                            <Navbar.Brand>
+                                <GiHamburgerMenu className='hamburger' onClick={toggleSideBarMenu} size={25}/>
+                            </Navbar.Brand>
+                        }
                         <Navbar.Brand as={Link} to='/'>
                             <img 
                                 src={RecipesLogo}
@@ -79,24 +81,26 @@ export default function Layout(){
                     </Container>
                 </Navbar>
                 <div style={{width: isExpanded ? '150px': '50px'}} className='sideBarMenu'>
-                    <ListGroup>
-                        <ListGroup.Item as={Link} to='favorites'>
-                            <GrFavorite/>
-                            {isExpanded &&
-                            ' Favorites'}
-                        </ListGroup.Item>
-                        {/* <ListGroup.Item as={Link} to='#'>
-                            <GiCook/>
-                            {isExpanded &&
-                            ' My Recipes'}
-                        </ListGroup.Item> */}
-                        {/* <ListGroup.Item as={Link} to='#'>
-                            <AiOutlineInfoCircle/>
-                            {isExpanded &&
-                            ' About'}
-                        </ListGroup.Item> */}
-                        
-                    </ListGroup>
+                    {user && 
+                        <ListGroup>
+                            <ListGroup.Item as={Link} to='favorites'>
+                                <GrFavorite/>
+                                {isExpanded &&
+                                ' Favorites'}
+                            </ListGroup.Item>
+                            {/* <ListGroup.Item as={Link} to='#'>
+                                <GiCook/>
+                                {isExpanded &&
+                                ' My Recipes'}
+                            </ListGroup.Item> */}
+                            {/* <ListGroup.Item as={Link} to='#'>
+                                <AiOutlineInfoCircle/>
+                                {isExpanded &&
+                                ' About'}
+                            </ListGroup.Item> */}
+                            
+                        </ListGroup>
+                    }
                 </div>
             </div>
             <div>
