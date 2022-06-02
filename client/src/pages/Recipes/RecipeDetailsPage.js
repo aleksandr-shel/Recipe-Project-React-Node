@@ -217,10 +217,10 @@ export default function RecipeDetails(){
                                             </div>
                                         </Figure.Caption>
                                         <Figure.Caption>
-                                            {isFavorite() ?
+                                            {user !== null && (isFavorite() ?
                                             <FcLike size={50} onClick={removeFavorite}/>
                                             :
-                                            <FcLikePlaceholder size={50} onClick={addFavorite}/>    
+                                            <FcLikePlaceholder size={50} onClick={addFavorite}/>)
                                             }
                                         </Figure.Caption>
                                         <Figure.Caption>
