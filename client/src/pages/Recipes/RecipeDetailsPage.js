@@ -54,9 +54,6 @@ export default function RecipeDetails(){
     }
 
     useEffect(()=>{
-        console.log(user);
-        console.log(recipe.author.id);
-        console.log(recipe);
         if (recipe){
             setComments(recipe.comments.reverse());
         } else if (recipeId) {
@@ -196,7 +193,7 @@ export default function RecipeDetails(){
                                     </Col>
                                     <Col md={4}>
                                         {
-                                            user?._id == recipe.author.id &&
+                                            (user?._id == recipe.author.id || user?._id == recipe.author._id) &&
                                             <div>
                                                 <Button variant="outline-primary" onClick={handleEditButton}>Edit</Button>{' '}
                                                 <Button variant="outline-danger" onClick={handleDeleteButton}>Delete</Button>
@@ -253,7 +250,7 @@ export default function RecipeDetails(){
                                 {
                                     return <ListGroup.Item key={index} style={{position:'relative'}}>
                                         {
-                                            user?.id === comment.author?.id &&
+                                            (user?._id === comment.author?.id || user?._id === comment.author?._id) &&
                                             <div style={{position:'absolute', top:'2px', right:'2px'}}>
                                                 <OverlayTrigger rootClose trigger="click" placement="top" overlay={CommentDeletePop}>
                                                     <CloseButton onClick={()=>setCommentIdToDelete(comment._id)} />

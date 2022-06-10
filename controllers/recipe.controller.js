@@ -113,7 +113,7 @@ const updateRecipe = async (req,res)=>{
                 return res.status(400).send({message:'could not find recipe id',err});
             }
             if (recipe){
-                if (recipe.author.id !== id){
+                if (recipe.author.id !== id && recipe.author._id !== id){
                     return res.status(401).send({message: 'not allowed to update this recipe'});
                 }
             }
@@ -152,7 +152,7 @@ const deleteRecipe = async (req,res)=>{
                 res.status(400).send({message:'could not find recipe id',err});
             }
             if (recipe){
-                if (recipe.author.id !== id){
+                if (recipe.author.id !== id && recipe.author._id !== id){
                     return res.status(401).send({message: 'not allowed to delete this recipe'});
                 }
             }

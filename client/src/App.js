@@ -10,8 +10,6 @@ import io from 'socket.io-client';
 const socket = io.connect('/');
 
 export default function App(){
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [User, setUser] = useState(null);
   return (
     <SocketContext.Provider value={{socket}}>
         <Routing/>

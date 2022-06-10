@@ -2,20 +2,19 @@ import React from "react";
 import { Button, Form, Col, Row, Image } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import IngredientsListForm from './RecipeDetails/IngredientListForm';
-import axios from "axios";
 import InstructionListForm from "./RecipeDetails/InstructionListForm";
-import { useUser} from '../Auth/useUser';
-import { useToken } from "../Auth/useToken";
 import { useNavigate } from "react-router-dom";
 import cuisines from "./SelectOptions/cuisines";
 import Select from 'react-select';
 import categories from "./SelectOptions/categories";
 import { useDispatch } from 'react-redux';
 import { addRecipeApi } from "../slice/recipesReducer";
+import { usersSelector } from './../slice/usersReducer';
+import { useSelector } from "react-redux";
 
 export default function RecipePostForm(){
 
-    const user = useUser();
+    const {user} = useSelector(usersSelector)
     const [recipeName, setRecipeName] = useState('')
     const [imageUrl, setImageUrl] = useState('')
     const [description, setDescription] = useState([''])

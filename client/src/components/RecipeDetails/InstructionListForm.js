@@ -7,7 +7,9 @@ export default function InstructionList({instruction, setInstruction}){
 
         setInstruction(instrs => {
             let newArr = [...instrs]
-            newArr[index].description = value;
+            let item = {...newArr[index]}
+            item.description = value;
+            newArr[index] = item;
             return newArr;
         })
     }
@@ -15,7 +17,9 @@ export default function InstructionList({instruction, setInstruction}){
 
         setInstruction(instrs => {
             let newArr = [...instrs]
-            newArr[index].img = value;
+            let item = {...newArr[index]}
+            item.img = value;
+            newArr[index] = item;
             return newArr;
         })
     }
