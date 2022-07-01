@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import { useDispatch } from 'react-redux';
+import { selectRecipe } from "../slice/recipesReducer";
 
 export default function RecipeSearchList(){
 
@@ -11,6 +13,7 @@ export default function RecipeSearchList(){
     const [query, setQuery] = useState('');
     const wrapperRef = useRef(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     async function handleSubmit(e){
         e.preventDefault();
@@ -34,6 +37,11 @@ export default function RecipeSearchList(){
         document.addEventListener("mousedown", handleClickOutside);
     },[wrapperRef])
 
+    function handleRecipeClick(recipe){
+        dispatch(selectRecipe(recipe))
+        navigate(`/recipes/${recipe._id}`)
+    }
+
     return(
         <Div ref={wrapperRef}>
             <Row>
@@ -55,7 +63,7 @@ export default function RecipeSearchList(){
                     <ListGroup style={{zIndex:'1', position:'relative'}} className='ms-2'>
                         {recipes.map((recipe, index)=>{
                             return(
-                                <ListGroup.Item key={index} className='d-flex' onClick={()=>{navigate(`/recipes/${recipe._id}`)}}>
+                                <ListGroup.Item key={index} className='d-flex' onClick={()=>{handleRecipeClick(recipe)}}>
                                     <Image src={recipe.imageUrl} alt='no image' style={{width:'50px'}} className='mx-2 my-auto img-thumbnail'/>
                                     <div className='mx-2 my-auto'>
                                         {recipe.recipeName}
