@@ -193,7 +193,7 @@ export default function RecipeDetails(){
                                     </Col>
                                     <Col md={4}>
                                         {
-                                            (user?._id == recipe.author.id || user?._id == recipe.author._id) &&
+                                            !!user && (user?._id == recipe.author.id || user?._id == recipe.author._id) &&
                                             <div>
                                                 <Button variant="outline-primary" onClick={handleEditButton}>Edit</Button>{' '}
                                                 <Button variant="outline-danger" onClick={handleDeleteButton}>Delete</Button>
