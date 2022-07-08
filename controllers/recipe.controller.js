@@ -2,8 +2,35 @@ const Recipe = require('../models/recipe');
 const User = require('../models/user');
 const Comment = require('../models/comment');
 const ObjectId = require('mongoose').Types.ObjectId;
-
 const jwt = require('jsonwebtoken');
+const {Readable} = require('stream');
+const uuid = require('uuid');
+
+const {S3}=require('aws-sdk');
+
+const s3 = new S3({
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+    region: process.env.AWS_S3_REGION
+})
+
+const uplaodFileTest = async(req,res)=>{
+    const photo = req.files['Photo'];
+    const blob = Readable.from(photo.data);
+    console.log(blob);
+    const key = uuid.v4() + req.files['Photo'].name;
+    const uploadedImage = await s3.upload({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: key,
+        ContentType: photo.mimetype,
+        Body: blob,
+      }).promise();
+
+    console.log(uploadedImage.Location);
+
+    res.end();
+}
+
 
 const addRecipe = async (req,res)=>{
     const {authorization} = req.headers;
@@ -18,6 +45,21 @@ const addRecipe = async (req,res)=>{
         if (err){
             return res.status(401).json({message:'Unable to verify token'})
         }
+
+        // const photo = req.files['Photo'];
+        // const blob = Readable.from(photo.data);
+        // console.log(blob);
+    
+        // const key = uuid.v4() + req.files['Photo'].name
+        // const uploadedImage = await s3.upload({
+        //     Bucket: process.env.AWS_S3_BUCKET_NAME,
+        //     Key: key,
+        //     ContentType: photo.mimetype,
+        //     Body: blob,
+        //   }).promise();
+    
+        // console.log(uploadedImage.Location);
+
         let newRecipe = new Recipe({
             recipeName: req.body.recipeName,
             imageUrl: req.body.imageUrl,
@@ -167,6 +209,13 @@ const deleteRecipe = async (req,res)=>{
                                 return res.status(500).send({message:'could not remove in user recipes array'})
                             }
                         })
+                    
+                    s3.deleteObject({
+                        Key:recipe.key
+                    }, (err)=>{
+                        console.log(err);
+                    })
+                    
                     return res.status(200).send({message:'Recipe deleted'});
                 }
             })
@@ -426,5 +475,6 @@ module.exports={
     searchForRecipes,
     addFavouriteRecipe,
     removeFavouriteRecipe,
-    getFavorites
+    getFavorites,
+    uplaodFileTest
 }

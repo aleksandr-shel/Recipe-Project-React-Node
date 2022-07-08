@@ -12,7 +12,7 @@ let mongoose = require('mongoose');
 let DB = require('./db');
 
 
-mongoose.connect(DB.URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 let mongoDB = mongoose.connection;
 mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
